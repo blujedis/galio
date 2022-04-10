@@ -1,13 +1,10 @@
-import { forwardRef, Component as ReactComponent, createContext } from 'react';
-// import PropTypes from 'prop-types';
+import React, { forwardRef, createContext, useContext, PropsWithChildren } from 'react';
 
 // import COLORS & SIZES
 import GALIO_COLORS from './colors';
 import GALIO_SIZES from './sizes';
 
-export interface IGalioContext {
-
-}
+export type Theme = typeof GalioTheme;
 
 // default theme with COLORS & SIZES
 const GalioTheme = {
@@ -18,19 +15,17 @@ const GalioTheme = {
 export default GalioTheme;
 
 // creating the GalioTheme context
-const GalioContext = createContext({} as IGalioContext);
+const GalioContext = createContext({});
 
 /**
  * useGalioTheme
  * Galio custom hook which returns the theme object
  */
 export function useGalioTheme() {
-  const theme = React.useContext(GalioContext);
-
+  const theme = useContext(GalioContext);
   if (theme === undefined) {
     throw new Error(`useGalioTheme must be used within a component wrapped with GalioProvider`);
   }
-
   return theme;
 }
 
@@ -39,7 +34,6 @@ export function useGalioTheme() {
  *   args: Component - React Component, styles to be added to Component
  *   theme: if no styles or theme add default theme={ SIZES, COLORS }
  */
-
 export function withGalio(Component, styles) {
 
   // eslint-disable-next-line react/no-multi-comp
@@ -71,32 +65,52 @@ export function withGalio(Component, styles) {
 
 }
 
+export function GalioProvider ({ theme, children}: PropsWithChildren<{ theme: any }>) {
+
+  const { COLORS: CUSTOM_COLORS, SIZES: CUSTOM_SIZES, customTheme } = theme;
+
+  const providerTheme = {
+    COLORS: { ...GalioTheme.COLORS, ...CUSTOM_COLORS },
+    SIZES: { ...GalioTheme.SIZES, ...CUSTOM_SIZES },
+    ...customTheme,
+  };
+
+  return (
+    <GalioContext.Provider theme={providerTheme}>
+      {children}
+    </GalioContext.Provider>
+  );
+
+};
+
 /*
  *   GalioProvider using React.Component
  *   GalioContext.Provider value has the default value from { COLORS, SIZES }
  */
-
 // eslint-disable-next-line react/no-multi-comp
-export class GalioProvider extends ReactComponent {
-  static defaultProps = {
-    children: null,
-    theme: {},
-  };
+// export class GalioProvider extends ReactComponent {
 
-  render() {
+//   static defaultProps = {
+//     children: null,
+//     theme: {},
+//   };
+
+//   render() {
     
-    const { theme, children } = this.props;
-    const { COLORS: CUSTOM_COLORS, SIZES: CUSTOM_SIZES, customTheme } = theme;
+//     const { theme, children } = this.props;
+//     const { COLORS: CUSTOM_COLORS, SIZES: CUSTOM_SIZES, customTheme } = theme;
 
-    const providerTheme = {
-      COLORS: { ...GalioTheme.COLORS, ...CUSTOM_COLORS },
-      SIZES: { ...GalioTheme.SIZES, ...CUSTOM_SIZES },
-      ...customTheme,
-    };
+//     const providerTheme = {
+//       COLORS: { ...GalioTheme.COLORS, ...CUSTOM_COLORS },
+//       SIZES: { ...GalioTheme.SIZES, ...CUSTOM_SIZES },
+//       ...customTheme,
+//     };
 
-    return <GalioContext.Provider value={providerTheme}>{children}</GalioContext.Provider>;
-  }
-}
+//     return <GalioContext.Provider value={providerTheme}>{children}</GalioContext.Provider>;
+
+//   }
+
+// }
 
 // GalioProvider.propTypes = {
 //   children: PropTypes.any,

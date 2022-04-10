@@ -50,8 +50,6 @@
   "collective": {
     "type": "opencollective",
     "url": "https://opencollective.com/galio"
-  },
-  "eslintConfig": {
-    "extends": "universe/native"
   }
+
 }
