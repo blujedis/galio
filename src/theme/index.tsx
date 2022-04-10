@@ -1,9 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import { forwardRef, Component as ReactComponent, createContext } from 'react';
+// import PropTypes from 'prop-types';
 
 // import COLORS & SIZES
 import GALIO_COLORS from './colors';
 import GALIO_SIZES from './sizes';
+
+export interface IGalioContext {
+
+}
 
 // default theme with COLORS & SIZES
 const GalioTheme = {
@@ -14,20 +18,17 @@ const GalioTheme = {
 export default GalioTheme;
 
 // creating the GalioTheme context
-const GalioContext = React.createContext();
+const GalioContext = createContext({} as IGalioContext);
 
 /**
- * useGalioTheme 
+ * useGalioTheme
  * Galio custom hook which returns the theme object
  */
-
 export function useGalioTheme() {
   const theme = React.useContext(GalioContext);
 
   if (theme === undefined) {
-    throw new Error(
-      'useGalioTheme must be used within a component wrapped with GalioProvider'
-    );
+    throw new Error(`useGalioTheme must be used within a component wrapped with GalioProvider`);
   }
 
   return theme;
@@ -40,10 +41,14 @@ export function useGalioTheme() {
  */
 
 export function withGalio(Component, styles) {
+
   // eslint-disable-next-line react/no-multi-comp
-  class EnhancedComponent extends React.Component {
+  class EnhancedComponent extends ReactComponent {
+
     render() {
+
       const { forwardedRef, ...rest } = this.props;
+
       return (
         <GalioContext.Consumer>
           {theme => (
@@ -59,9 +64,11 @@ export function withGalio(Component, styles) {
     }
   }
 
-  return React.forwardRef((props, ref) => {
+
+  return forwardRef((props, ref) => {
     return <EnhancedComponent forwardedRef={ref} {...props} />;
   });
+
 }
 
 /*
@@ -70,13 +77,14 @@ export function withGalio(Component, styles) {
  */
 
 // eslint-disable-next-line react/no-multi-comp
-export class GalioProvider extends React.Component {
+export class GalioProvider extends ReactComponent {
   static defaultProps = {
     children: null,
     theme: {},
   };
 
   render() {
+    
     const { theme, children } = this.props;
     const { COLORS: CUSTOM_COLORS, SIZES: CUSTOM_SIZES, customTheme } = theme;
 
@@ -90,7 +98,7 @@ export class GalioProvider extends React.Component {
   }
 }
 
-GalioProvider.propTypes = {
-  children: PropTypes.any,
-  theme: PropTypes.any,
-};
+// GalioProvider.propTypes = {
+//   children: PropTypes.any,
+//   theme: PropTypes.any,
+// };

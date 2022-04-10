@@ -33,6 +33,7 @@
     "opencollective-postinstall": "^2.0.1"
   },
   "devDependencies": {
+    "@types/react": "^18.0.1",
     "eslint": "^5.8.0",
     "eslint-config-universe": "^1.0.7",
     "prettier": "^1.15.1",
