@@ -16,35 +16,25 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 
-export default type => {
-  switch (type.toLowerCase()) {
-    case 'zocial':
-      return ZocialIcon;
-    case 'octicons':
-      return OcticonIcon;
-    case 'materialicons':
-      return MaterialIcon;
-    case 'materialcommunityicons':
-      return MaterialCommunityIcon;
-    case 'ionicons':
-      return Ionicon;
-    case 'foundation':
-      return FoundationIcon;
-    case 'evilicons':
-      return EvilIcon;
-    case 'entypo':
-      return EntypoIcon;
-    case 'fontawesome':
-      return FAIcon;
-    case 'fontawesome5':
-      return FA5Icon;
-    case 'simplelineicons':
-      return SimpleLineIcon;
-    case 'feather':
-      return FeatherIcon;
-    case 'antdesign':
-      return AntIcon;
-    default:
-      return Fontisto;
-  }
+export const IconMap = {
+  ZocialIcon: ZocialIcon,
+  OcticonIcon: OcticonIcon,
+  MaterialIcon: MaterialIcon,
+  MaterialCommunityIcon: MaterialCommunityIcon,
+  Ionicon: Ionicon,
+  FoundationIcon: FoundationIcon,
+  EvilIcon: EvilIcon,
+  EntypoIcon: EntypoIcon,
+  FAIcon: FAIcon,
+  FA5Icon: FA5Icon,
+  SimpleLineIcon: SimpleLineIcon,
+  FeatherIcon: FeatherIcon,
+  AntIcon: AntIcon,
+  Fontisto: Fontisto
+};
+
+export type IconType = keyof typeof IconMap;
+
+export default (type = 'Fontisto' as IconType) => {
+  return IconMap[type];
 };
