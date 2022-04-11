@@ -1,6 +1,5 @@
 
 /* eslint-disable import/no-cycle */
-
 import Accordion from './Accordion';
 import Block from './Block';
 import Card from './Card';
@@ -16,10 +15,11 @@ import Input from './atomic/atoms/Input';
 import Link from './atomic/atoms/Link';
 import Icon from './atomic/ions/Icon';
 import Text from './atomic/ions/Text';
-import galioConfig from './config/galio.json';
+import { GalioFont, galioConfig } from './init';
+// import galioConfig from './config/galio.json';
 import theme, { withGalio, GalioProvider, useGalioTheme } from './theme';
 
-const GalioFont = require('./fonts/galio.ttf');
+// const GalioFont = require('./fonts/galio.ttf');
 
 export {
   Accordion,

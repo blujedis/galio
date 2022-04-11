@@ -13,7 +13,6 @@ import Input from './atomic/atoms/Input';
 import Link from './atomic/atoms/Link';
 import Icon from './atomic/ions/Icon';
 import Text from './atomic/ions/Text';
-import galioConfig from './config/galio.json';
+import { GalioFont, galioConfig } from './init';
 import theme, { withGalio, GalioProvider, useGalioTheme } from './theme';
-declare const GalioFont: any;
 export { Accordion, Block, Button, Card, Checkbox, DeckSwiper, Icon, Input, NavBar, Radio, Slider, Text, Link, Toast, Switch, theme, withGalio, GalioProvider, useGalioTheme, galioConfig, GalioFont, };

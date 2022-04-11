@@ -1,7 +1,7 @@
 "use strict";
-/* eslint-disable import/no-cycle */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GalioFont = exports.galioConfig = exports.useGalioTheme = exports.GalioProvider = exports.withGalio = exports.theme = exports.Switch = exports.Toast = exports.Link = exports.Text = exports.Slider = exports.Radio = exports.NavBar = exports.Input = exports.Icon = exports.DeckSwiper = exports.Checkbox = exports.Card = exports.Button = exports.Block = exports.Accordion = void 0;
+/* eslint-disable import/no-cycle */
 const Accordion_1 = require("./Accordion");
 exports.Accordion = Accordion_1.default;
 const Block_1 = require("./Block");
@@ -32,13 +32,13 @@ const Icon_1 = require("./atomic/ions/Icon");
 exports.Icon = Icon_1.default;
 const Text_1 = require("./atomic/ions/Text");
 exports.Text = Text_1.default;
-const galio_json_1 = require("./config/galio.json");
-exports.galioConfig = galio_json_1.default;
+const init_1 = require("./init");
+Object.defineProperty(exports, "GalioFont", { enumerable: true, get: function () { return init_1.GalioFont; } });
+Object.defineProperty(exports, "galioConfig", { enumerable: true, get: function () { return init_1.galioConfig; } });
+// import galioConfig from './config/galio.json';
 const theme_1 = require("./theme");
 exports.theme = theme_1.default;
 Object.defineProperty(exports, "withGalio", { enumerable: true, get: function () { return theme_1.withGalio; } });
 Object.defineProperty(exports, "GalioProvider", { enumerable: true, get: function () { return theme_1.GalioProvider; } });
 Object.defineProperty(exports, "useGalioTheme", { enumerable: true, get: function () { return theme_1.useGalioTheme; } });
-const GalioFont = require('./fonts/galio.ttf');
-exports.GalioFont = GalioFont;
 //# sourceMappingURL=index.js.map
