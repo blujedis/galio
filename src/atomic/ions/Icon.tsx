@@ -1,10 +1,11 @@
 import React from 'react';
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons';
 
-import galioConfig from '../../config/galio.json';
 import getIconType, { IconFamilyType } from '../../helpers/getIconType';
 import GalioTheme, { withGalio } from '../../theme';
 import { BaseProps, InternalProps } from '../../types';
+
+const galioConfig = require('../../config/galio.json');
 
 export interface IconProps extends BaseProps {
   name?: string;
