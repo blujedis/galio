@@ -17,24 +17,24 @@ import AntIcon from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 
 export const IconMap = {
-  ZocialIcon: ZocialIcon,
-  OcticonIcon: OcticonIcon,
-  MaterialIcon: MaterialIcon,
-  MaterialCommunityIcon: MaterialCommunityIcon,
-  Ionicon: Ionicon,
-  FoundationIcon: FoundationIcon,
-  EvilIcon: EvilIcon,
-  EntypoIcon: EntypoIcon,
-  FAIcon: FAIcon,
-  FA5Icon: FA5Icon,
-  SimpleLineIcon: SimpleLineIcon,
-  FeatherIcon: FeatherIcon,
-  AntIcon: AntIcon,
-  Fontisto: Fontisto
+  zocial: ZocialIcon,
+  cticon: OcticonIcon,
+  material: MaterialIcon,
+  'material-community': MaterialCommunityIcon,
+  ionicon: Ionicon,
+  foundation: FoundationIcon,
+  evil: EvilIcon,
+  entypo: EntypoIcon,
+  'font-awesome': FAIcon,
+  'font-awesome-5': FA5Icon,
+  'simple-line-icon': SimpleLineIcon,
+  feather: FeatherIcon,
+  antdesig: AntIcon,
+  fontisto: Fontisto
 };
 
-export type IconType = keyof typeof IconMap;
+export type IconFamilyType = keyof typeof IconMap;
 
-export default (type = 'Fontisto' as IconType) => {
+export default (type = 'Fontisto' as IconFamilyType) => {
   return IconMap[type];
 };

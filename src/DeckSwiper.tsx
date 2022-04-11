@@ -1,24 +1,44 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import {
   StyleSheet,
   Dimensions,
   Animated,
   PanResponder,
+  ViewStyle,
 } from 'react-native';
-import PropTypes from 'prop-types';
 
 import Block from './Block';
+import { BaseProps } from './types';
+
+export interface DeckSwiperProps extends BaseProps {
+  style?: ViewStyle;
+  components?: ReactNode[];
+  onSwipeRight?: () => void;
+  onSwipeLeft?: () => void;
+  focusedElementStyle?: ViewStyle;
+  nextElementStyle?: ViewStyle;
+}
+
+const DefaultDeckSwiperProps: DeckSwiperProps = {};
 
 const { width: SCREEN_WIDTH } = Dimensions.get('screen');
 
-function DeckSwiper({
-  onSwipeRight,
-  onSwipeLeft,
-  focusedElementStyle,
-  nextElementStyle,
-  components,
-  style
-}) {
+function DeckSwiper(props: DeckSwiperProps) {
+
+  props = {
+    ...DefaultDeckSwiperProps,
+    ...props
+  };
+
+  const {
+    onSwipeRight,
+    onSwipeLeft,
+    focusedElementStyle,
+    nextElementStyle,
+    components,
+    style
+  } = props as Required<DeckSwiperProps>;
+
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const position = new Animated.ValueXY();
 
@@ -55,24 +75,33 @@ function DeckSwiper({
       position.setValue({ x: gestureState.dx, y: gestureState.dy });
     },
     onPanResponderRelease: (evt, gestureState) => {
-      if(gestureState.dx > 110) {
+      if (gestureState.dx > 110) {
         Animated.spring(position, {
-          toValue: { x: SCREEN_WIDTH + 100, y: gestureState.dy }
+          toValue: {
+            x: SCREEN_WIDTH + 100,
+            y: gestureState.dy
+          },
+          useNativeDriver: false 
         }).start(() => {
           setCurrentIndex(currentIndex + 1);
         });
-       if(onSwipeRight) onSwipeRight();
-      }else if(gestureState.dx < -110) {
+        if (onSwipeRight) onSwipeRight();
+      } else if (gestureState.dx < -110) {
         Animated.spring(position, {
-          toValue: { x: -SCREEN_WIDTH - 100, y: gestureState.dy }
+          toValue: {
+            x: -SCREEN_WIDTH - 100,
+            y: gestureState.dy
+          },
+          useNativeDriver: false
         }).start(() => {
           setCurrentIndex(currentIndex + 1);
         });
-        if(onSwipeLeft) onSwipeLeft();
-      }else{
+        if (onSwipeLeft) onSwipeLeft();
+      } else {
         Animated.spring(position, {
           toValue: { x: 0, y: 0 },
-          friction: 4
+          friction: 4,
+          useNativeDriver: false
         }).start();
       }
     },
@@ -82,11 +111,11 @@ function DeckSwiper({
     position.setValue({ x: 0, y: 0 });
   }, [currentIndex]);
 
-  function renderComponents(components) {
+  function renderComponents(components: ReactNode[]) {
     return components.map((item, i) => {
-      if(i < currentIndex) {
+      if (i < currentIndex) {
         return null
-      }else if(i == currentIndex){
+      } else if (i == currentIndex) {
         return (
           <Animated.View
             key={i}
@@ -102,7 +131,7 @@ function DeckSwiper({
             {item}
           </Animated.View>
         );
-      }else{
+      } else {
         return (
           <Animated.View
             key={i}
@@ -120,18 +149,18 @@ function DeckSwiper({
   }
   return (
     <Block flex center style={[{ width: SCREEN_WIDTH * 0.7 }, style]}>
-        {renderComponents(components)}
+      {renderComponents(components)}
     </Block>
   );
 }
 
-DeckSwiper.propTypes = {
-  components: PropTypes.array.isRequired,
-  onSwipeRight: PropTypes.func, 
-  onSwipeLeft: PropTypes.func,
-  focusedElementStyle: PropTypes.any,
-  nextElementStyle: PropTypes.any,
-  style: PropTypes.any
-}
-
 export default DeckSwiper;
+
+// DeckSwiper.propTypes = {
+//   components: PropTypes.array.isRequired,
+//   onSwipeRight: PropTypes.func, 
+//   onSwipeLeft: PropTypes.func,
+//   focusedElementStyle: PropTypes.any,
+//   nextElementStyle: PropTypes.any,
+//   style: PropTypes.any
+// }

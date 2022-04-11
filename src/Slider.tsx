@@ -1,11 +1,66 @@
 import React, { PureComponent } from 'react';
-import { View, Animated, StyleSheet, PanResponder } from 'react-native';
-import PropTypes from 'prop-types';
-import GalioTheme, { withGalio } from './theme';
+import { View, Animated, StyleSheet, PanResponder, ViewStyle, PanResponderInstance, LayoutChangeEvent } from 'react-native';
 
-class Slider extends PureComponent {
-  constructor(props) {
+import GalioTheme, { withGalio } from './theme';
+import { BaseProps, ThemeType } from './types';
+
+export type SliderStyles = ReturnType<typeof styles>;
+
+export interface SliderProps extends BaseProps {
+  activeColor?: string;
+  value?: number;
+  disabled?: boolean;
+  minimumValue?: number;
+  maximumValue?: number;
+  trackStyle?: ViewStyle;
+  thumbStyle?: ViewStyle;
+  step?: number;
+  onSlidingComplete?: () => void;
+  onSlidingStart?: () => void;
+  onValueChange?: () => void;
+}
+
+export interface SliderSize {
+  width: number;
+  height: number;
+}
+
+export interface SliderState {
+  containerSize: SliderSize;
+  trackSize: SliderSize;
+  thumbSize: SliderSize;
+  measured: boolean, //hide the UI until we measure the View
+}
+
+class Slider extends PureComponent<SliderProps, SliderState> {
+
+  static defaultProps = {
+    disabled: false,
+    minimumValue: 0,
+    maximumValue: 100,
+    trackStyle: {},
+    thumbStyle: {},
+    value: 0,
+    step: 0,
+    // style: null,
+    theme: GalioTheme,
+    onSlidingComplete: () => { },
+    onSlidingStart: () => { },
+    onValueChange: () => { },
+  };
+
+  position: Animated.Value;
+  _panResponder: PanResponderInstance;
+  _previousLeft: number;
+  _containerSize: SliderSize;
+  _trackSize: SliderSize;
+  _thumbSize: SliderSize;
+
+
+  constructor(props: SliderProps) {
+
     super(props);
+
     this.state = {
       containerSize: { width: 0, height: 0 },
       trackSize: { width: 0, height: 0 },
@@ -14,6 +69,7 @@ class Slider extends PureComponent {
     };
 
     this.position = new Animated.Value(props.value); //recieve value from user
+
     this._panResponder = PanResponder.create({
       onMoveShouldSetPanResponderCapture: () => true,
       onPanResponderGrant: (e, gestureState) => {
@@ -37,19 +93,21 @@ class Slider extends PureComponent {
         this._fireChangeEvent('onSlidingComplete');
       },
     });
+
   }
 
-  _getRatio = value =>
+  _getRatio = (value: number) =>
     (value - this.props.minimumValue) / (this.props.maximumValue - this.props.minimumValue);
 
-  _getThumbLeft = value =>
+  _getThumbLeft = (value: number) =>
     this._getRatio(value) * (this.state.containerSize.width - this.state.thumbSize.width);
 
-  _getCurrentVal = () => this.position.__getValue();
+  _getCurrentVal = () => (this.position as any).__getValue();
 
-  _setCurrentValue = value => this.position.setValue(value);
+  _setCurrentValue = (value: number) => this.position.setValue(value);
 
-  _getValue = gestureState => {
+  _getValue = (gestureState: any) => {
+
     const length = this.state.containerSize.width - this.state.thumbSize.width;
     const thumbLeft = this._previousLeft + gestureState.dx;
 
@@ -61,13 +119,14 @@ class Slider extends PureComponent {
         Math.min(
           this.props.maximumValue,
           this.props.minimumValue +
-            Math.round(
-              (ratio * (this.props.maximumValue - this.props.minimumValue)) / this.props.step
-            ) *
-              this.props.step
+          Math.round(
+            (ratio * (this.props.maximumValue - this.props.minimumValue)) / this.props.step
+          ) *
+          this.props.step
         )
       );
     }
+
     return Math.max(
       this.props.minimumValue,
       Math.min(
@@ -75,31 +134,41 @@ class Slider extends PureComponent {
         ratio * (this.props.maximumValue - this.props.minimumValue) + this.props.minimumValue
       )
     );
+
   };
+
   // container size
-  _measureContainer = x => {
+  _measureContainer = (x: LayoutChangeEvent) => {
     this._handleMeasure('containerSize', x);
   };
+
   // track size
-  _measureTrack = x => {
+  _measureTrack = (x: LayoutChangeEvent) => {
     this._handleMeasure('trackSize', x);
   };
+
   // thumb size
-  _measureThumb = x => {
+  _measureThumb = (x: LayoutChangeEvent) => {
     this._handleMeasure('thumbSize', x);
   };
+
   // calculate all of them
-  _handleMeasure = (name, x) => {
+  _handleMeasure = (name: string, x: any) => {
     const { width, height } = x.nativeEvent.layout;
     const size = { width, height };
 
     const storeName = `_${name}`;
-    const currentSize = this[storeName];
+
+    const currentSize = (this as any)[storeName];
+
     if (currentSize && width === currentSize.width && height === currentSize.height) {
       return;
     }
-    this[storeName] = size; // initialize a new var with the current sizes
+
+    (this as any)[storeName] = size; // initialize a new var with the current sizes
+
     if (this._containerSize && this._trackSize && this._thumbSize) {
+
       this.setState({
         containerSize: this._containerSize,
         trackSize: this._trackSize,
@@ -107,9 +176,10 @@ class Slider extends PureComponent {
         measured: true,
       });
     }
+
   };
 
-  _fireChangeEvent = event => {
+  _fireChangeEvent = (event: any) => {
     if (this.props[event]) {
       this.props[event](this._getCurrentVal());
     }
@@ -138,7 +208,7 @@ class Slider extends PureComponent {
       outputRange: [0, containerSize.width - thumbSize.width],
     });
 
-    const visibleStyle = {};
+    const visibleStyle = {} as any;
     if (!measured) visibleStyle.opacity = 0;
 
     const minimumTrackStyle = {
@@ -175,38 +245,39 @@ class Slider extends PureComponent {
       </View>
     );
   }
+
 }
 
-Slider.defaultProps = {
-  disabled: false,
-  minimumValue: 0,
-  maximumValue: 100,
-  trackStyle: {},
-  thumbStyle: {},
-  value: 0,
-  step: 0,
-  style: null,
-  theme: GalioTheme,
-  onSlidingComplete: () => {},
-  onSlidingStart: () => {},
-  onValueChange: () => {},
-};
+// Slider.defaultProps = {
+//   disabled: false,
+//   minimumValue: 0,
+//   maximumValue: 100,
+//   trackStyle: {},
+//   thumbStyle: {},
+//   value: 0,
+//   step: 0,
+//   style: null,
+//   theme: GalioTheme,
+//   onSlidingComplete: () => {},
+//   onSlidingStart: () => {},
+//   onValueChange: () => {},
+// };
 
-Slider.propTypes = {
-  value: PropTypes.number,
-  disabled: PropTypes.bool,
-  minimumValue: PropTypes.number,
-  maximumValue: PropTypes.number,
-  trackStyle: PropTypes.any,
-  thumbStyle: PropTypes.any,
-  step: PropTypes.number,
-  styles: PropTypes.any,
-  onSlidingComplete: PropTypes.func,
-  onSlidingStart: PropTypes.func,
-  onValueChange: PropTypes.func,
-};
+// Slider.propTypes = {
+//   value: PropTypes.number,
+//   disabled: PropTypes.bool,
+//   minimumValue: PropTypes.number,
+//   maximumValue: PropTypes.number,
+//   trackStyle: PropTypes.any,
+//   thumbStyle: PropTypes.any,
+//   step: PropTypes.number,
+//   styles: PropTypes.any,
+//   onSlidingComplete: PropTypes.func,
+//   onSlidingStart: PropTypes.func,
+//   onValueChange: PropTypes.func,
+// };
 
-const styles = theme =>
+const styles = (theme: ThemeType) =>
   StyleSheet.create({
     container: {
       height: 40,

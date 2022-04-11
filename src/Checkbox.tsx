@@ -1,35 +1,81 @@
 /* eslint-disable object-curly-newline */
-import React from 'react';
-import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import PropTypes from 'prop-types';
+import React, { PropsWithChildren } from 'react';
+import { View, TouchableOpacity, StyleSheet, Image, ViewStyle, ImageStyle, TextStyle } from 'react-native';
+
 // galio dependency
 import Icon from './atomic/ions/Icon';
 import Text from './atomic/ions/Text';
 import GalioTheme, { withGalio } from './theme';
+import { BaseProps, InternalProps, ThemeType } from './types';
+import { IconFamilyType } from './helpers/getIconType';
 
-function Checkbox({
-  checkboxStyle,
-  color,
-  disabled,
-  flexDirection,
-  image,
-  imageStyle,
-  iconColor,
-  iconFamily,
-  iconName,
-  iconSize,
-  initialValue,
-  label,
-  labelStyle,
-  onChange,
-  style,
-  styles,
-  theme,
-}) {
+export type CheckboxStyles = ReturnType<typeof styles>;
+
+export interface CheckBoxProps extends BaseProps {
+  checkboxStyle?: ViewStyle;
+  disabled?: boolean;
+  flexDirection?: ViewStyle['flexDirection'];
+  iconName?: string;
+  iconSize?: number;
+  iconFamily?: IconFamilyType | 'Galio';
+  image?: string;
+  imageStyle?: ImageStyle;
+  initialValue?: boolean;
+  label?: string;
+  labelStyle?: TextStyle;
+  onChange?: (current?: boolean) => void;
+}
+
+const DefaultCheckboxProps: CheckBoxProps = {
+  // checkboxStyle: null,
+  color: 'theme',
+  disabled: false,
+  flexDirection: 'row',
+  iconColor: '#fff',
+  iconName: 'check',
+  iconSize: 15,
+  iconFamily: 'font-awesome',
+  // image: null,
+  // imageStyle: null,
+  initialValue: false,
+  // label: null,
+  // labelStyle: null,
+  onChange: () => { },
+  styles: {},
+  theme: GalioTheme,
+};
+
+function Checkbox(props: PropsWithChildren<CheckBoxProps>) {
+
+  props = {
+    ...DefaultCheckboxProps,
+    ...props
+  };
+
+  const {
+    checkboxStyle,
+    color,
+    disabled,
+    flexDirection,
+    image,
+    imageStyle,
+    iconColor,
+    iconFamily,
+    iconName,
+    iconSize,
+    initialValue,
+    label,
+    labelStyle,
+    onChange,
+    style,
+    styles,
+    theme,
+  } = props as InternalProps<CheckBoxProps, CheckboxStyles>;
+
   const [checked, setChecked] = React.useState(initialValue);
 
   // adding the necessary margins depending on the flexDirection
-  function spaceAround(direction) {
+  function spaceAround(direction: ViewStyle['flexDirection']) {
     switch (direction) {
       case 'row-reverse':
         return { marginRight: 10 };
@@ -108,7 +154,7 @@ function Checkbox({
   );
 }
 
-const styles = theme =>
+const styles = (theme: ThemeType) =>
   StyleSheet.create({
     container: {
       flexDirection: 'row',
@@ -147,48 +193,50 @@ const styles = theme =>
     },
   });
 
-Checkbox.defaultProps = {
-  checkboxStyle: null,
-  color: 'theme',
-  disabled: false,
-  flexDirection: 'row',
-  iconColor: '#fff',
-  iconName: 'check',
-  iconSize: 15,
-  iconFamily: 'FontAwesome',
-  image: null,
-  imageStyle: null,
-  initialValue: false,
-  label: null,
-  labelStyle: null,
-  onChange: () => {},
-  styles: {},
-  theme: GalioTheme,
-};
 
-Checkbox.propTypes = {
-  checkboxStyle: PropTypes.any,
-  color: PropTypes.oneOfType([
-    PropTypes.oneOf(['primary', 'theme', 'error', 'warning', 'success', 'transparent', 'info']),
-    PropTypes.string,
-  ]),
-  disabled: PropTypes.bool,
-  flexDirection: PropTypes.oneOfType([
-    PropTypes.oneOf(['row', 'row-reverse', 'column', 'column-reverse']),
-    PropTypes.string,
-  ]),
-  iconColor: PropTypes.string,
-  iconName: PropTypes.string,
-  iconSize: PropTypes.number,
-  iconFamily: PropTypes.string,
-  image: PropTypes.string,
-  imageStyle: PropTypes.any, // style the image
-  initialValue: PropTypes.bool,
-  label: PropTypes.string.isRequired,
-  labelStyle: PropTypes.any, // style the text
-  onChange: PropTypes.func,
-  styles: PropTypes.any, // style the whole View element,
-  theme: PropTypes.any,
-};
 
 export default withGalio(Checkbox, styles);
+
+// Checkbox.defaultProps = {
+//   checkboxStyle: null,
+//   color: 'theme',
+//   disabled: false,
+//   flexDirection: 'row',
+//   iconColor: '#fff',
+//   iconName: 'check',
+//   iconSize: 15,
+//   iconFamily: 'FontAwesome',
+//   image: null,
+//   imageStyle: null,
+//   initialValue: false,
+//   label: null,
+//   labelStyle: null,
+//   onChange: () => {},
+//   styles: {},
+//   theme: GalioTheme,
+// };
+
+// Checkbox.propTypes = {
+//   checkboxStyle: PropTypes.any,
+//   color: PropTypes.oneOfType([
+//     PropTypes.oneOf(['primary', 'theme', 'error', 'warning', 'success', 'transparent', 'info']),
+//     PropTypes.string,
+//   ]),
+//   disabled: PropTypes.bool,
+//   flexDirection: PropTypes.oneOfType([
+//     PropTypes.oneOf(['row', 'row-reverse', 'column', 'column-reverse']),
+//     PropTypes.string,
+//   ]),
+//   iconColor: PropTypes.string,
+//   iconName: PropTypes.string,
+//   iconSize: PropTypes.number,
+//   iconFamily: PropTypes.string,
+//   image: PropTypes.string,
+//   imageStyle: PropTypes.any, // style the image
+//   initialValue: PropTypes.bool,
+//   label: PropTypes.string.isRequired,
+//   labelStyle: PropTypes.any, // style the text
+//   onChange: PropTypes.func,
+//   styles: PropTypes.any, // style the whole View element,
+//   theme: PropTypes.any,
+// };

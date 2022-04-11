@@ -1,21 +1,49 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
-import PropTypes from 'prop-types';
-import { withGalio } from 'theme';
+import React, { PropsWithChildren } from 'react';
+import { View, Text, StyleSheet, Image, ImageProps, ImageStyle, ViewStyle, TextStyle } from 'react-native';
 
-const Avatar = ({
-  source,
-  size,
-  label,
-  labelColor,
-  backgroundColor,
-  labelStyle,
-  imageProps,
-  imageStyle,
-  containerStyle,
-  styles,
-  theme,
-}) => {
+import { withGalio } from './theme';
+import { BaseProps, InternalProps, ThemeType } from './types';
+
+export type AvatarStyles = ReturnType<typeof styles>;
+
+export interface AvatarProps extends BaseProps {
+  source?: ImageProps['source'];
+  size?: number;
+  label?: string;
+  labelColor?: string;
+  backgroundColor?: string;
+  labelStyle?: TextStyle;
+  imageProps?: ImageProps;
+  imageStyle?: ImageStyle;
+  containerStyle?: ViewStyle;
+}
+
+const DefaultAvatarProps: AvatarProps = {
+  size: 50,
+};
+
+const Avatar = (props: PropsWithChildren<AvatarProps>) => {
+
+  props = {
+    ...DefaultAvatarProps,
+    ...props
+  };
+
+  const {
+    source,
+    size,
+    label,
+    labelColor,
+    backgroundColor,
+    labelStyle,
+    imageProps,
+    imageStyle,
+    containerStyle,
+    styles,
+    theme,
+  } = props as InternalProps<AvatarProps, AvatarStyles>;
+
+
   const getContainerStyle = () => {
     return {
       width: size,
@@ -23,7 +51,7 @@ const Avatar = ({
       alignItems: 'center',
       justifyContent: 'center',
       borderRadius: size / 2,
-    };
+    } as Record<string, any>;
   };
 
   const getLabelContainerStyle = () => {
@@ -75,26 +103,8 @@ const Avatar = ({
   );
 };
 
-Avatar.defaultProps = {
-  size: 50,
-};
 
-Avatar.propTypes = {
-  label: PropTypes.string,
-  labelColor: PropTypes.string,
-  size: PropTypes.number,
-  source: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
-  backgroundColor: PropTypes.string,
-  imageProps: PropTypes.object,
-  imageStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.number]),
-  containerStyle: PropTypes.shape({
-    style: PropTypes.any,
-  }),
-  styles: PropTypes.any,
-  theme: PropTypes.any,
-};
-
-const styles = (theme) =>
+const styles = (theme: ThemeType) =>
   StyleSheet.create({
     labelContainerWithInset: {
       top: 1,
@@ -109,3 +119,23 @@ const styles = (theme) =>
   });
 
 export default withGalio(Avatar, styles);
+
+
+// Avatar.defaultProps = {
+//   size: 50,
+// };
+
+// Avatar.propTypes = {
+//   label: PropTypes.string,
+//   labelColor: PropTypes.string,
+//   size: PropTypes.number,
+//   source: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
+//   backgroundColor: PropTypes.string,
+//   imageProps: PropTypes.object,
+//   imageStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.number]),
+//   containerStyle: PropTypes.shape({
+//     style: PropTypes.any,
+//   }),
+//   styles: PropTypes.any,
+//   theme: PropTypes.any,
+// };

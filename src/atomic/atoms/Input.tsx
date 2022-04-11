@@ -1,39 +1,106 @@
-import React from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-import PropTypes from 'prop-types';
+import React, { PropsWithChildren } from 'react';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, TextInputProps } from 'react-native';
 import Icon from '../ions/Icon';
 import GalioTheme, { withGalio } from '../../theme';
+import { IconFamilyType } from '../../helpers/getIconType';
+import { BaseInternalProps, BaseProps, InternalProps, ThemeType } from '../../types';
 
-function Input({
-  style,
-  textInputStyle,
-  type,
-  placeholderTextColor,
-  label,
-  labelStyles,
-  color,
-  help,
-  helpStyles,
-  bgColor,
-  borderless,
-  viewPass,
-  rounded,
-  icon,
-  family,
-  left,
-  right,
-  iconColor,
-  topHelp,
-  bottomHelp,
-  theme,
-  styles,
-  iconSize,
-  iconContent,
-  password,
-  onRef,
-  error,
-  ...rest
-}) {
+type InputStyles = ReturnType<typeof styles>;
+
+export interface InputProps
+  extends Omit<
+  TextInputProps,
+  | 'style'
+  | 'keyboardType'
+  | 'secureTextEntry'
+  | 'placeholderTextColor'
+  | 'underlineColorAndroid'
+  >,
+  BaseProps {
+  type?: TextInputProps['keyboardType'];
+  password?: boolean;
+  label?: string;
+  bgColor?: string;
+  rounded?: boolean;
+  borderless?: boolean;
+  viewPass?: boolean;
+  icon?: string;
+  iconColor?: string;
+  family?: IconFamilyType;
+  color?: string;
+  help?: string;
+  left?: boolean;
+  right?: boolean;
+  topHelp?: boolean;
+  bottomHelp?: boolean;
+  iconSize?: number;
+}
+
+const DefaultInputProps: InputProps = {
+  type: 'default',
+  password: false,
+  // placeholderTextColor: null,
+  // label: null,
+  // help: null,
+  rounded: false,
+  left: true,
+  right: false,
+  viewPass: false,
+  topHelp: true,
+  bottomHelp: false,
+  // style: null,
+  // textInputStyle: null,
+  borderless: false,
+  // bgColor: null,
+  // iconColor: null,
+  // icon: null,
+  // family: null,
+  // color: null,
+  // iconSize: null,
+  // iconContent: null,
+  // onRef: null,
+  styles: {} as unknown as InputStyles,
+  theme: GalioTheme,
+};
+
+function Input(props: PropsWithChildren<InputProps>) {
+
+  props = {
+    ...DefaultInputProps,
+    ...props
+  };
+
+  const {
+    style,
+    textInputStyle,
+    type,
+    placeholderTextColor,
+    label,
+    labelStyles,
+    color,
+    help,
+    helpStyles,
+    bgColor,
+    borderless,
+    viewPass,
+    rounded,
+    icon,
+    family,
+    left,
+    right,
+    iconColor,
+    topHelp,
+    bottomHelp,
+    theme,
+    styles,
+    iconSize,
+    iconContent,
+    password,
+    onRef,
+    error,
+    ...rest
+  } = props as InternalProps<InputProps, InputStyles>; 
+
   const [isPassword, setIsPassword] = React.useState(false);
   React.useEffect(() => {
     setIsPassword(password);
@@ -45,7 +112,7 @@ function Input({
     bgColor && { backgroundColor: bgColor },
     rounded && styles.rounded,
     borderless && styles.borderless,
-    error && { borderColor: theme.COLORS.DANGER},
+    error && { borderColor: theme.COLORS.DANGER },
     style,
   ];
 
@@ -91,79 +158,29 @@ function Input({
       {labelContent}
       {topHelp && !bottomHelp && helpContent}
       <View style={inputViewStyles}>
-        {left && !right && iconInstance}
-        <TextInput
-          ref={onRef}
-          style={inputStyles}
-          keyboardType={type}
-          secureTextEntry={isPassword}
-          placeholderTextColor={placeholderTextColor}
-          underlineColorAndroid="transparent"
-          {...rest}
-        />
-        {right && iconInstance}
-        {viewPassElement}
+        <>
+          {left && !right && iconInstance}
+          <TextInput
+            ref={onRef}
+            style={inputStyles}
+            keyboardType={type}
+            secureTextEntry={isPassword}
+            placeholderTextColor={placeholderTextColor}
+            underlineColorAndroid="transparent"
+            {...rest}
+          />
+          {right && iconInstance}
+          {viewPassElement}
+        </>
       </View>
       {bottomHelp && helpContent}
     </View>
   );
 }
 
-Input.defaultProps = {
-  type: 'default',
-  password: false,
-  placeholderTextColor: null,
-  label: null,
-  help: null,
-  rounded: false,
-  left: true,
-  right: false,
-  viewPass: false,
-  topHelp: true,
-  bottomHelp: false,
-  style: null,
-  textInputStyle: null,
-  borderless: false,
-  bgColor: null,
-  iconColor: null,
-  icon: null,
-  family: null,
-  color: null,
-  styles: {},
-  iconSize: null,
-  iconContent: null,
-  theme: GalioTheme,
-  onRef: null,
-};
 
-Input.propTypes = {
-  style: PropTypes.any,
-  textInputStyle: PropTypes.any,
-  type: PropTypes.string,
-  password: PropTypes.bool,
-  placeholderTextColor: PropTypes.string,
-  label: PropTypes.string,
-  bgColor: PropTypes.string,
-  rounded: PropTypes.bool,
-  borderless: PropTypes.bool,
-  viewPass: PropTypes.bool,
-  iconColor: PropTypes.string,
-  icon: PropTypes.string,
-  family: PropTypes.string,
-  color: PropTypes.string,
-  help: PropTypes.string,
-  left: PropTypes.bool,
-  right: PropTypes.bool,
-  topHelp: PropTypes.bool,
-  bottomHelp: PropTypes.bool,
-  styles: PropTypes.any,
-  iconSize: PropTypes.number,
-  iconContent: PropTypes.any,
-  theme: PropTypes.any,
-  onRef: PropTypes.func,
-};
 
-const styles = theme =>
+const styles = (theme: ThemeType) =>
   StyleSheet.create({
     inputStyle: {
       backgroundColor: theme.COLORS.WHITE,
@@ -199,10 +216,9 @@ const styles = theme =>
     },
     helpText: {
       color: theme.COLORS.SECONDARY,
-      fontSize: theme.SIZES.INPUT_HELP_TEXT,
+      fontSize: theme.SIZES.INPUT_HELP_TEXT || 14,
       marginVertical: 8,
       paddingHorizontal: 16,
-      fontSize: 14
     },
     rounded: {
       borderRadius: theme.SIZES.INPUT_ROUNDED,
@@ -212,4 +228,59 @@ const styles = theme =>
       borderWidth: 0,
     },
   });
+
 export default withGalio(Input, styles);
+
+// Input.defaultProps = {
+//   type: 'default',
+//   password: false,
+//   placeholderTextColor: null,
+//   label: null,
+//   help: null,
+//   rounded: false,
+//   left: true,
+//   right: false,
+//   viewPass: false,
+//   topHelp: true,
+//   bottomHelp: false,
+//   style: null,
+//   textInputStyle: null,
+//   borderless: false,
+//   bgColor: null,
+//   iconColor: null,
+//   icon: null,
+//   family: null,
+//   color: null,
+//   styles: {},
+//   iconSize: null,
+//   iconContent: null,
+//   theme: GalioTheme,
+//   onRef: null,
+// };
+
+// Input.propTypes = {
+//   style: PropTypes.any,
+//   textInputStyle: PropTypes.any,
+//   type: PropTypes.string,
+//   password: PropTypes.bool,
+//   placeholderTextColor: PropTypes.string,
+//   label: PropTypes.string,
+//   bgColor: PropTypes.string,
+//   rounded: PropTypes.bool,
+//   borderless: PropTypes.bool,
+//   viewPass: PropTypes.bool,
+//   iconColor: PropTypes.string,
+//   icon: PropTypes.string,
+//   family: PropTypes.string,
+//   color: PropTypes.string,
+//   help: PropTypes.string,
+//   left: PropTypes.bool,
+//   right: PropTypes.bool,
+//   topHelp: PropTypes.bool,
+//   bottomHelp: PropTypes.bool,
+//   styles: PropTypes.any,
+//   iconSize: PropTypes.number,
+//   iconContent: PropTypes.any,
+//   theme: PropTypes.any,
+//   onRef: PropTypes.func,
+// };

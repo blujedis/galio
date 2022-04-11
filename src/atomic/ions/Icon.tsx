@@ -1,18 +1,26 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons';
 
 import galioConfig from '../../config/galio.json';
-import getIconType from '../../helpers/getIconType';
+import getIconType, { IconFamilyType } from '../../helpers/getIconType';
 import GalioTheme, { withGalio } from '../../theme';
+import { BaseInternalProps, BaseProps, InternalProps } from '../../types';
 
-export interface IconProps {
-  name: any;
-  family: any;
-  size: number;
-  color: string;
-  styles: Record<string, any>;
-  theme: typeof GalioTheme;
+export interface IconProps extends BaseProps {
+  name?: string;
+  family?: IconFamilyType | 'Galio'
+  size?: number;
+  color?: string;
 }
+
+const IconDefaultProps: IconProps = {
+  // name: null,
+  // family: null,
+  // size: null,
+  // color: null,
+  styles: {},
+  theme: GalioTheme,
+};
 
 const Galio = createIconSetFromIcoMoon(galioConfig, 'Galio', './fonts/galio.ttf');
 
@@ -20,24 +28,32 @@ const Galio = createIconSetFromIcoMoon(galioConfig, 'Galio', './fonts/galio.ttf'
 // Galio Fonts have to loaded with Fonts.loadAsync if you're
 // using Expo (you can export GalioFont from index in order to import it)
 
-function Icon({
-  name,
-  family,
-  size,
-  color,
-  styles,
-  theme,
-  medium,
-  large,
-  ...rest
-}: any) {
+function Icon(props: any) {
+
+  props = {
+    ...IconDefaultProps,
+    ...props
+  };
+
+  const {
+    name,
+    family,
+    size,
+    color,
+    styles,
+    theme,
+    medium,
+    large,
+    ...rest
+  } = props as InternalProps<IconProps>; 
+
   if (family === 'Galio') {
     if (name) {
       return (
         <Galio
           name={name}
           size={size || (medium ? theme.SIZES.ICON_MEDIUM : (large ? theme.SIZES.ICON_LARGE : theme.SIZES.ICON))}
-          color={color || theme.COLORS.THEME.BLACK}
+          color={color || theme.COLORS.BLACK}
           {...rest}
         />
       );
@@ -49,7 +65,7 @@ function Icon({
         <IconInstance
           name={name}
           size={size || (medium ? theme.SIZES.ICON_MEDIUM : (large ? theme.SIZES.ICON_LARGE : theme.SIZES.ICON))}
-          color={color || theme.COLORS.THEME.BLACK}
+          color={color || theme.COLORS.BLACK}
           {...rest}
         />
       );
@@ -59,13 +75,13 @@ function Icon({
   return null;
 }
 
-Icon.defaultProps = {
-  name: null,
-  family: null,
-  size: null,
-  color: null,
-  styles: {},
-  theme: GalioTheme,
-};
-
 export default withGalio(Icon);
+
+// Icon.defaultProps = {
+//   name: null,
+//   family: null,
+//   size: null,
+//   color: null,
+//   styles: {},
+//   theme: GalioTheme,
+// };

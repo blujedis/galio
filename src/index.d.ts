@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 declare module 'galio-framework' {
+
   type IconFamilyType =
     | 'Galio'
     | 'zocial'
@@ -247,6 +248,7 @@ declare module 'galio-framework' {
     ios_backgroundColor?: string;
     onChange?: () => void;
   }
+  
   export class Switch extends React.Component<SwitchProps> {}
 
   interface ThemeType {
@@ -320,6 +322,7 @@ declare module 'galio-framework' {
       [key: string]: string;
     };
   }
+
   export const theme: ThemeType = {};
   export interface GalioProviderProps extends BaseProps {
     theme: ThemeType;
@@ -331,4 +334,5 @@ declare module 'galio-framework' {
     Component: T,
     styles: NamedStyles
   ): ComponentType<any>;
+
 }

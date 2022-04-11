@@ -1,38 +1,85 @@
-import React from 'react';
-import { View, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
-import PropTypes from 'prop-types';
+import React, { ReactNode } from 'react';
+import { View, TouchableOpacity, StyleSheet, Dimensions, ViewStyle } from 'react-native';
 
 // galio components
 import Block from './Block';
 import Text from './atomic/ions/Text';
 import Icon from './atomic/ions/Icon';
 import GalioTheme, { withGalio } from './theme';
+import { BaseProps, InternalProps, ThemeType } from './types';
+
+export type NavBarStyles = ReturnType<typeof styles>;
+
+export interface NavBarProps extends BaseProps {
+  back?: boolean;
+  hideLeft?: boolean;
+  hideRight?: boolean;
+  left?: ReactNode;
+  leftIconColor?: string;
+  leftIconFamily?: string;
+  leftIconName?: string;
+  leftIconSize?: number;
+  leftStyle?: ViewStyle;
+  onLeftPress?: () => void;
+  right?: ReactNode;
+  rightStyle?: ViewStyle;
+  title?: ReactNode;
+  titleNumberOfLines?: number;
+  titleStyle?: ViewStyle;
+  transparent?: boolean;
+}
+
+
+const DefaultNavBarProps: NavBarProps = {
+  back: false,
+  transparent: false,
+  // title: null,
+  // titleStyle: null,
+  // left: null,
+  // leftStyle: null,
+  // leftIconColor: null,
+  onLeftPress: () => {},
+  // leftHitSlop: null,
+  // right: null,
+  // rightStyle: null,
+  // style: null,
+  styles: {},
+  theme: GalioTheme,
+};
 
 const { height } = Dimensions.get('screen');
 
-function NavBar({
-  back,
-  hideLeft,
-  hideRight,
-  left,
-  leftStyle,
-  leftIconColor,
-  leftHitSlop,
-  leftIconSize,
-  leftIconName,
-  leftIconFamily,
-  onLeftPress,
-  right,
-  rightStyle,
-  style,
-  styles,
-  transparent,
-  theme,
-  title,
-  titleStyle,
-  titleNumberOfLines,
-  titleTextProps,
-}) {
+function NavBar(props: NavBarProps) {
+
+  props = {
+    ...DefaultNavBarProps,
+    ...props
+  };
+
+  const {
+    back,
+    hideLeft,
+    hideRight,
+    left,
+    leftStyle,
+    leftIconColor,
+    leftHitSlop,
+    leftIconSize,
+    leftIconName,
+    leftIconFamily,
+    onLeftPress,
+    right,
+    rightStyle,
+    style,
+    styles,
+    transparent,
+    theme,
+    title,
+    titleStyle,
+    titleNumberOfLines,
+    titleTextProps,
+  } = props as Omit<InternalProps<NavBarProps, NavBarStyles>, 'children'>;
+
   function renderTitle() {
     if (typeof title === 'string') {
       return (
@@ -92,45 +139,8 @@ function NavBar({
   );
 }
 
-NavBar.defaultProps = {
-  back: false,
-  transparent: false,
-  title: null,
-  titleStyle: null,
-  left: null,
-  leftStyle: null,
-  leftIconColor: null,
-  onLeftPress: () => {},
-  leftHitSlop: null,
-  right: null,
-  rightStyle: null,
-  style: null,
-  styles: {},
-  theme: GalioTheme,
-};
 
-NavBar.propTypes = {
-  back: PropTypes.bool,
-  transparent: PropTypes.bool,
-  title: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
-  titleStyle: PropTypes.any,
-  left: PropTypes.node,
-  leftStyle: PropTypes.any,
-  leftIconColor: PropTypes.string,
-  onLeftPress: PropTypes.func,
-  leftHitSlop: PropTypes.any,
-  right: PropTypes.node,
-  rightStyle: PropTypes.any,
-  style: PropTypes.any,
-  styles: PropTypes.any,
-  theme: PropTypes.any,
-  leftIconName: PropTypes.string,
-  leftIconFamily: PropTypes.string,
-  hideLeft: PropTypes.bool,
-  hideRight: PropTypes.bool,
-};
-
-const styles = theme =>
+const styles = (theme: ThemeType) =>
   StyleSheet.create({
     navBar: {
       width: 'auto',
@@ -173,3 +183,42 @@ const styles = theme =>
   });
 
 export default withGalio(NavBar, styles);
+
+
+// NavBar.defaultProps = {
+//   back: false,
+//   transparent: false,
+//   title: null,
+//   titleStyle: null,
+//   left: null,
+//   leftStyle: null,
+//   leftIconColor: null,
+//   onLeftPress: () => {},
+//   leftHitSlop: null,
+//   right: null,
+//   rightStyle: null,
+//   style: null,
+//   styles: {},
+//   theme: GalioTheme,
+// };
+
+// NavBar.propTypes = {
+//   back: PropTypes.bool,
+//   transparent: PropTypes.bool,
+//   title: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
+//   titleStyle: PropTypes.any,
+//   left: PropTypes.node,
+//   leftStyle: PropTypes.any,
+//   leftIconColor: PropTypes.string,
+//   onLeftPress: PropTypes.func,
+//   leftHitSlop: PropTypes.any,
+//   right: PropTypes.node,
+//   rightStyle: PropTypes.any,
+//   style: PropTypes.any,
+//   styles: PropTypes.any,
+//   theme: PropTypes.any,
+//   leftIconName: PropTypes.string,
+//   leftIconFamily: PropTypes.string,
+//   hideLeft: PropTypes.bool,
+//   hideRight: PropTypes.bool,
+// };

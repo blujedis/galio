@@ -1,29 +1,66 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import PropTypes from 'prop-types';
 // G A L I O - D E P E N D E N C Y
 import Text from './atomic/ions/Text';
 import GalioTheme, { withGalio } from './theme';
+import { BaseProps, InternalProps, ThemeType } from './types';
 
-function Radio({
-                 color,
-                 containerStyle,
-                 disabled,
-                 flexDirection,
-                 initialValue,
-                 label,
-                 labelStyle,
-                 onChange,
-                 radioOuterStyle,
-                 radioInnerStyle,
-                 styles,
-                 theme,
-                 value
-               }) {
+export type RadioStyles = ReturnType<typeof styles>;
+
+export interface RadioProps extends BaseProps {
+  color?: string;
+  containerStyle?: ViewStyle;
+  radioOuterStyle?: ViewStyle;
+  radioInnerStyle?: ViewStyle;
+  flexDirection?: ViewStyle['flexDirection'];
+  initialValue?: boolean;
+  label?: string;
+  labelStyle?: TextStyle;
+  onChange?: () => void;
+  value?: boolean;
+}
+
+const DefaultRadioProps: RadioProps = {
+  color: 'primary',
+  disabled: false,
+  flexDirection: 'row',
+  initialValue: false,
+  // label: null,
+  // labelStyle: null,
+  onChange: () => {},
+  styles: {},
+  theme: GalioTheme,
+  value: false
+};
+
+function Radio(props: RadioProps) {
+
+  props = {
+    ...DefaultRadioProps,
+    ...props
+  };
+
+  const {
+    color,
+    containerStyle,
+    disabled,
+    flexDirection,
+    initialValue,
+    label,
+    labelStyle,
+    onChange,
+    radioOuterStyle,
+    radioInnerStyle,
+    styles,
+    theme,
+    value
+  } = props as Omit<InternalProps<RadioProps, RadioStyles>, 'children'>;
+
   const [checked, setChecked] = React.useState(initialValue);
 
   // A D D I N G - R E Q U I R E D - S P A C E (S) - B A S E D - O N - F L E X - D I R E C T I O N
-  function spaceAround(direction) {
+  function spaceAround(direction: ViewStyle['flexDirection']) {
     switch (direction) {
       case 'row-reverse':
         return { marginRight: 10 };
@@ -97,7 +134,7 @@ function Radio({
   );
 }
 
-const styles = theme =>
+const styles = (theme: ThemeType) =>
     StyleSheet.create({
       container: {
         flexDirection: 'row',
@@ -132,36 +169,37 @@ const styles = theme =>
       },
     });
 
-Radio.defaultProps = {
-  color: 'primary',
-  disabled: false,
-  flexDirection: 'row',
-  initialValue: false,
-  label: null,
-  labelStyle: null,
-  onChange: () => {},
-  styles: {},
-  theme: GalioTheme,
-  value: false
-};
-
-Radio.propTypes = {
-  color: PropTypes.string,
-  containerStyle: PropTypes.any,
-  radioOuterStyle: PropTypes.any,
-  radioInnerStyle: PropTypes.any,
-  disabled: PropTypes.bool,
-  flexDirection: PropTypes.oneOfType([
-    PropTypes.oneOf(['row', 'row-reverse', 'column', 'column-reverse']),
-    PropTypes.string,
-  ]),
-  initialValue: PropTypes.bool,
-  label: PropTypes.string.isRequired,
-  labelStyle: PropTypes.any,
-  onChange: PropTypes.func,
-  styles: PropTypes.any,
-  theme: PropTypes.any,
-  value: PropTypes.bool
-};
-
 export default withGalio(Radio, styles);
+
+
+// Radio.defaultProps = {
+//   color: 'primary',
+//   disabled: false,
+//   flexDirection: 'row',
+//   initialValue: false,
+//   label: null,
+//   labelStyle: null,
+//   onChange: () => {},
+//   styles: {},
+//   theme: GalioTheme,
+//   value: false
+// };
+
+// Radio.propTypes = {
+//   color: PropTypes.string,
+//   containerStyle: PropTypes.any,
+//   radioOuterStyle: PropTypes.any,
+//   radioInnerStyle: PropTypes.any,
+//   disabled: PropTypes.bool,
+//   flexDirection: PropTypes.oneOfType([
+//     PropTypes.oneOf(['row', 'row-reverse', 'column', 'column-reverse']),
+//     PropTypes.string,
+//   ]),
+//   initialValue: PropTypes.bool,
+//   label: PropTypes.string.isRequired,
+//   labelStyle: PropTypes.any,
+//   onChange: PropTypes.func,
+//   styles: PropTypes.any,
+//   theme: PropTypes.any,
+//   value: PropTypes.bool
+// };

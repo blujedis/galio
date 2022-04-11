@@ -1,10 +1,11 @@
-import React, { forwardRef, createContext, useContext, PropsWithChildren } from 'react';
+import React, { forwardRef, createContext, useContext, PropsWithChildren, ForwardRefExoticComponent, FC, Component as ReactComponent } from 'react';
+import { ThemeType } from '../types';
 
 // import COLORS & SIZES
 import GALIO_COLORS from './colors';
 import GALIO_SIZES from './sizes';
 
-export type Theme = typeof GalioTheme;
+export type StylesFn = <T extends ThemeType>(theme: T) => Record<string, unknown>;
 
 // default theme with COLORS & SIZES
 const GalioTheme = {
@@ -12,10 +13,8 @@ const GalioTheme = {
   SIZES: GALIO_SIZES,
 };
 
-export default GalioTheme;
-
 // creating the GalioTheme context
-const GalioContext = createContext({});
+const GalioContext = createContext({} as ThemeType);
 
 /**
  * useGalioTheme
@@ -29,90 +28,80 @@ export function useGalioTheme() {
   return theme;
 }
 
+
 /*
  *   withGalio
  *   args: Component - React Component, styles to be added to Component
  *   theme: if no styles or theme add default theme={ SIZES, COLORS }
  */
-export function withGalio(Component, styles) {
+export const withGalio = <P extends Record<string, any>, S extends StylesFn = StylesFn>(
+  Component: FC<P> | typeof ReactComponent | ForwardRefExoticComponent<P>, styles?: S) => {
+  type Ref = typeof Component extends FC ? ReturnType<typeof Component> : typeof Component;
 
-  // eslint-disable-next-line react/no-multi-comp
-  class EnhancedComponent extends ReactComponent {
+  const EnhancedComponent = forwardRef<Ref, P>((props, forwardedRef) => {
+    return (
+      <GalioContext.Consumer>
+        {theme => (
+          <Component
+            ref={forwardedRef}
+            {...props}
+            theme={{ ...GalioTheme, ...theme }}
+            styles={styles && styles({ ...GalioTheme, ...theme })}
+          />
+        )}
+      </GalioContext.Consumer>
+    );
 
-    render() {
-
-      const { forwardedRef, ...rest } = this.props;
-
-      return (
-        <GalioContext.Consumer>
-          {theme => (
-            <Component
-              ref={forwardedRef}
-              {...rest}
-              theme={{ ...GalioTheme, ...theme }}
-              styles={styles && styles({ ...GalioTheme, ...theme })}
-            />
-          )}
-        </GalioContext.Consumer>
-      );
-    }
-  }
-
-
-  return forwardRef((props, ref) => {
-    return <EnhancedComponent forwardedRef={ref} {...props} />;
   });
+  EnhancedComponent.displayName = Component.name;
+  return EnhancedComponent;
+};
 
-}
-
-export function GalioProvider ({ theme, children}: PropsWithChildren<{ theme: any }>) {
-
+export function GalioProvider<T extends ThemeType & { customTheme?: Record<string, any> }>(
+  { theme, children }: PropsWithChildren<{ theme: T }>) {
   const { COLORS: CUSTOM_COLORS, SIZES: CUSTOM_SIZES, customTheme } = theme;
-
   const providerTheme = {
     COLORS: { ...GalioTheme.COLORS, ...CUSTOM_COLORS },
     SIZES: { ...GalioTheme.SIZES, ...CUSTOM_SIZES },
     ...customTheme,
   };
-
   return (
-    <GalioContext.Provider theme={providerTheme}>
+    <GalioContext.Provider value={providerTheme}>
       {children}
     </GalioContext.Provider>
   );
-
 };
 
-/*
- *   GalioProvider using React.Component
- *   GalioContext.Provider value has the default value from { COLORS, SIZES }
- */
-// eslint-disable-next-line react/no-multi-comp
-// export class GalioProvider extends ReactComponent {
+export default GalioTheme;
 
-//   static defaultProps = {
-//     children: null,
-//     theme: {},
-//   };
+// export function withGalio(Component, styles) {
 
-//   render() {
-    
-//     const { theme, children } = this.props;
-//     const { COLORS: CUSTOM_COLORS, SIZES: CUSTOM_SIZES, customTheme } = theme;
+//   // eslint-disable-next-line react/no-multi-comp
+//   class EnhancedComponent extends ReactComponent {
 
-//     const providerTheme = {
-//       COLORS: { ...GalioTheme.COLORS, ...CUSTOM_COLORS },
-//       SIZES: { ...GalioTheme.SIZES, ...CUSTOM_SIZES },
-//       ...customTheme,
-//     };
+//     render() {
 
-//     return <GalioContext.Provider value={providerTheme}>{children}</GalioContext.Provider>;
+//       const { forwardedRef, ...rest } = this.props;
 
+//       return (
+//         <GalioContext.Consumer>
+//           {theme => (
+//             <Component
+//               ref={forwardedRef}
+//               {...rest}
+//               theme={{ ...GalioTheme, ...theme }}
+//               styles={styles && styles({ ...GalioTheme, ...theme })}
+//             />
+//           )}
+//         </GalioContext.Consumer>
+//       );
+//     }
 //   }
+
+
+//   return forwardRef((props, ref) => {
+//     return <EnhancedComponent forwardedRef={ref} {...props} />;
+//   });
 
 // }
 
-// GalioProvider.propTypes = {
-//   children: PropTypes.any,
-//   theme: PropTypes.any,
-// };

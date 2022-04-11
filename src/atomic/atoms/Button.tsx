@@ -1,13 +1,66 @@
-import React from 'react';
-import { ActivityIndicator, Dimensions, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import PropTypes from 'prop-types';
+import React, { PropsWithChildren } from 'react';
+import { ActivityIndicator, Dimensions, StyleSheet, TouchableOpacity, Text, TouchableOpacityProps, ViewStyle } from 'react-native';
+
 // galio components
 import Icon from '../ions/Icon';
-import GalioTheme, { withGalio } from '../../theme';
+import GalioTheme, {  withGalio } from '../../theme';
+import { BaseInternalProps, BaseProps, InternalProps, ThemeType } from '../../types';
+
+type ButtonStyles = ReturnType<typeof styles>;
+type Size = 'small' | 'large';
+
+export interface ButtonProps extends TouchableOpacityProps, BaseProps {
+  capitalize?: boolean;
+  color?: keyof ButtonStyles; //  ButtonColorType;
+  disabled?: boolean;
+  icon?: string | boolean;
+  iconColor?: boolean | string;
+  iconFamily?: boolean | string;
+  iconSize?: number;
+  loading?: boolean;
+  loadingSize?: Size;
+  loadingColor?: string;
+  lowercase?: boolean;
+  onlyIcon?: boolean;
+  opacity?: number;
+  round?: boolean;
+  shadowColor?: boolean | string;
+  shadowless?: boolean;
+  size?: Size | number | string;
+  uppercase?: boolean;
+}
+
+const ButtonDefaultProps: ButtonProps = {
+  color: 'primary',
+  size: 'default',
+  disabled: false,
+  uppercase: false,
+  lowercase: false,
+  capitalize: false,
+  shadowless: false,
+  shadowColor: false,
+  onlyIcon: false,
+  loading: false,
+  loadingSize: 'small',
+  opacity: .8,
+  icon: false,
+  iconRight: false,
+  iconFamily: false,
+  iconSize: 16,
+  styles: {} as unknown as ButtonStyles,
+  theme: GalioTheme,
+};
 
 const { width } = Dimensions.get('window');
 
-function Button({
+function Button(props: PropsWithChildren<ButtonProps>) {
+
+  props = {
+    ...ButtonDefaultProps,
+    ...props
+  };
+
+  const {
     color,
     children,
     capitalize,
@@ -33,7 +86,9 @@ function Button({
     textStyle,
     uppercase,
     ...rest
-}) {
+
+  } = props as InternalProps<ButtonProps, ButtonStyles>; 
+
   function renderContent() {
     const textStyles = [styles.customText, textStyle];
 
@@ -62,7 +117,7 @@ function Button({
           <Text>{content}</Text>
         </>
       );
-    } ;
+    };
     if (iconRight && !onlyIcon) {
       content = (
         <>
@@ -105,7 +160,7 @@ function Button({
     color && !colorStyle && { backgroundColor: color }, // color set & no styles for that color
     color === 'transparent' || styles.androidShadow,
     color === 'transparent' && !shadowless && { borderWidth: 1, borderColor: theme.COLORS.WHITE },
-    size === 'large' ? { width: width * 0.9 } : ( size === "small" ? { width: width * 0.3 } : { width: width * 0.42 }),
+    size === 'large' ? { width: width * 0.9 } : (size === "small" ? { width: width * 0.3 } : { width: width * 0.42 }),
     round && { borderRadius: theme.SIZES.BASE * 2 },
 
     onlyIcon && {
@@ -115,10 +170,10 @@ function Button({
       borderRadius: iconSize * 2,
     },
     !shadowless && styles.shadow,
-    { shadowColor: shadowColor || theme.COLORS[color.toUpperCase()] },
+    { shadowColor: shadowColor || (theme.COLORS as any)[(color as string).toUpperCase()] },
     { zIndex: 2 },
     style,
-  ];
+  ] as ViewStyle[];
 
   return (
     <TouchableOpacity disabled={disabled} activeOpacity={opacity} style={buttonStyles} {...rest}>
@@ -127,57 +182,7 @@ function Button({
   );
 }
 
-Button.defaultProps = {
-  color: 'primary',
-  size: 'default',
-  disabled: false,
-  uppercase: false,
-  lowercase: false,
-  capitalize: false,
-  shadowless: false,
-  shadowColor: false,
-  onlyIcon: false,
-  loading: false,
-  loadingSize: 'small',
-  opacity: .8,
-  icon: false,
-  iconRight: false,
-  iconFamily: false,
-  iconSize: 16,
-  iconColor: null,
-  styles: {},
-  theme: GalioTheme,
-};
-
-Button.propTypes = {
-  ...TouchableOpacity.propTypes,
-  color: PropTypes.oneOfType([
-    PropTypes.oneOf([
-      'theme', 'primary', 'info', 'danger', 'warning', 'success', 'black', 'grey', 'secondary', 'transparent', 'white', 
-    ]),
-    PropTypes.string,
-  ]),
-  size: PropTypes.oneOfType([PropTypes.oneOf(['large', 'default', 'small']), PropTypes.number]),
-  iconColor: PropTypes.string,
-  disabled: PropTypes.bool,
-  uppercase: PropTypes.bool,
-  lowercase: PropTypes.bool,
-  capitalize: PropTypes.bool,
-  loading: PropTypes.bool,
-  loadingSize: PropTypes.oneOf(['small', 'default', 'large']),
-  opacity: PropTypes.number,
-  shadowless: PropTypes.bool,
-  shadowColor: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-  onlyIcon: PropTypes.bool,
-  icon: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-  iconRight: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  iconFamily: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-  iconSize: PropTypes.number,
-  styles: PropTypes.any,
-  theme: PropTypes.any,
-};
-
-const styles = theme =>
+const styles = (theme: ThemeType) =>
   StyleSheet.create({
     defaultButton: {
       borderRadius: 4,
@@ -236,3 +241,54 @@ const styles = theme =>
   });
 
 export default withGalio(Button, styles);
+
+// Button.defaultProps = {
+//   color: 'primary',
+//   size: 'default',
+//   disabled: false,
+//   uppercase: false,
+//   lowercase: false,
+//   capitalize: false,
+//   shadowless: false,
+//   shadowColor: false,
+//   onlyIcon: false,
+//   loading: false,
+//   loadingSize: 'small',
+//   opacity: .8,
+//   icon: false,
+//   iconRight: false,
+//   iconFamily: false,
+//   iconSize: 16,
+//   iconColor: null,
+//   styles: {},
+//   theme: GalioTheme,
+// };
+
+
+// Button.propTypes = {
+//   ...TouchableOpacity.propTypes,
+//   color: PropTypes.oneOfType([
+//     PropTypes.oneOf([
+//       'theme', 'primary', 'info', 'danger', 'warning', 'success', 'black', 'grey', 'secondary', 'transparent', 'white', 
+//     ]),
+//     PropTypes.string,
+//   ]),
+//   size: PropTypes.oneOfType([PropTypes.oneOf(['large', 'default', 'small']), PropTypes.number]),
+//   iconColor: PropTypes.string,
+//   disabled: PropTypes.bool,
+//   uppercase: PropTypes.bool,
+//   lowercase: PropTypes.bool,
+//   capitalize: PropTypes.bool,
+//   loading: PropTypes.bool,
+//   loadingSize: PropTypes.oneOf(['small', 'default', 'large']),
+//   opacity: PropTypes.number,
+//   shadowless: PropTypes.bool,
+//   shadowColor: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+//   onlyIcon: PropTypes.bool,
+//   icon: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+//   iconRight: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+//   iconFamily: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+//   iconSize: PropTypes.number,
+//   styles: PropTypes.any,
+//   theme: PropTypes.any,
+// };

@@ -1,35 +1,28 @@
-import React, { Component } from 'react';
-import { Dimensions, StyleSheet, Animated } from 'react-native';
-import PropTypes from 'prop-types';
+import React, { Component, ReactNode } from 'react';
+import { Dimensions, StyleSheet, Animated, ViewStyle, TextStyle } from 'react-native';
+
 // Galio components
 import Text from './atomic/ions/Text';
 import GalioTheme, { withGalio } from './theme';
+import { BaseColorType, BaseProps, ThemeType } from './types';
 
 const { height } = Dimensions.get('screen');
 
-class Toast extends Component {
-  static propTypes = {
-    children: PropTypes.node.isRequired,
-    isShow: PropTypes.bool.isRequired,
-    positionIndicator: PropTypes.oneOf(['top', 'center', 'bottom']),
-    positionOffset: PropTypes.number,
-    fadeInDuration: PropTypes.number,
-    fadeOutDuration: PropTypes.number,
-    color: PropTypes.oneOfType([
-      PropTypes.oneOf(['primary', 'theme', 'info', 'error', 'warning', 'success']),
-      PropTypes.string,
-    ]),
-    round: PropTypes.bool,
-    style: PropTypes.shape({
-      style: PropTypes.any,
-    }),
-    textStyle: PropTypes.shape({
-      style: PropTypes.any,
-    }),
-    styles: PropTypes.any,
-    theme: PropTypes.any,
-    useNativeDriver: PropTypes.bool
-  };
+export interface ToastProps extends BaseProps {
+  style?: ViewStyle;
+  children?: ReactNode;
+  isShow?: boolean;
+  positionIndicator?: 'top' | 'center' | 'bottom';
+  positionOffset?: number;
+  fadeInDuration?: number;
+  fadeOutDuration?: number;
+  color?: BaseColorType;
+  round?: boolean;
+  textStyle?: TextStyle;
+  useNativeDriver?: boolean;
+}
+
+class Toast extends Component<ToastProps, { isShow: boolean; fadeAnim: Animated.Value }> {
 
   static defaultProps = {
     positionIndicator: 'top',
@@ -38,8 +31,8 @@ class Toast extends Component {
     fadeOutDuration: 300,
     color: 'primary',
     round: false,
-    style: null,
-    textStyle: null,
+    // style: null,
+    // textStyle: null,
     styles: {},
     theme: GalioTheme,
     useNativeDriver: true
@@ -50,11 +43,11 @@ class Toast extends Component {
     fadeAnim: new Animated.Value(0),
   };
 
-  animation;
+  animation: Animated.CompositeAnimation;
+  visibilityTimeout: number;
 
-  visibilityTimeout;
+  componentDidUpdate(prevProps: ToastProps) {
 
-  componentDidUpdate(prevProps) {
     const { isShow, fadeInDuration, fadeOutDuration, useNativeDriver } = this.props;
     const { isShow: prevIsShow } = prevProps;
     const { fadeAnim } = this.state;
@@ -66,15 +59,21 @@ class Toast extends Component {
         toValue: 1,
         duration: fadeInDuration,
         useNativeDriver,
-      }).start();
+      });
+
+      this.animation.start();
+
     }
 
     if (prevIsShow && !isShow) {
+
       this.animation = Animated.timing(fadeAnim, {
         toValue: 0,
         duration: fadeOutDuration,
         useNativeDriver,
-      }).start();
+      });
+
+      this.animation.start();
 
       this.visibilityTimeout = setTimeout(() => {
         this.setVisibility(false);
@@ -92,7 +91,7 @@ class Toast extends Component {
     }
   }
 
-  setVisibility = (isShow) => this.setState({ isShow });
+  setVisibility = (isShow: boolean) => this.setState({ isShow });
 
   getTopPosition = () => {
     const { positionIndicator, positionOffset } = this.props;
@@ -109,7 +108,8 @@ class Toast extends Component {
   };
 
   renderContent = () => {
-    const { children, textStyle } = this.props;
+
+    const { children, textStyle, styles } = this.props;
     const textStyles = [styles.text, textStyle];
 
     if (typeof children === 'string') {
@@ -120,6 +120,7 @@ class Toast extends Component {
   };
 
   render() {
+
     const { theme, color, round, style, styles, ...rest } = this.props;
     const { isShow, fadeAnim } = this.state;
     const colorStyle = styles[`${color}Color`];
@@ -141,9 +142,10 @@ class Toast extends Component {
       </Animated.View>
     ) : null;
   }
+
 }
 
-const styles = (theme) =>
+const styles = (theme: ThemeType) =>
   StyleSheet.create({
     toast: {
       padding: theme.SIZES.BASE,
@@ -177,3 +179,26 @@ const styles = (theme) =>
   });
 
 export default withGalio(Toast, styles);
+
+  // static propTypes = {
+  //   children: PropTypes.node.isRequired,
+  //   isShow: PropTypes.bool.isRequired,
+  //   positionIndicator: PropTypes.oneOf(['top', 'center', 'bottom']),
+  //   positionOffset: PropTypes.number,
+  //   fadeInDuration: PropTypes.number,
+  //   fadeOutDuration: PropTypes.number,
+  //   color: PropTypes.oneOfType([
+  //     PropTypes.oneOf(['primary', 'theme', 'info', 'error', 'warning', 'success']),
+  //     PropTypes.string,
+  //   ]),
+  //   round: PropTypes.bool,
+  //   style: PropTypes.shape({
+  //     style: PropTypes.any,
+  //   }),
+  //   textStyle: PropTypes.shape({
+  //     style: PropTypes.any,
+  //   }),
+  //   styles: PropTypes.any,
+  //   theme: PropTypes.any,
+  //   useNativeDriver: PropTypes.bool
+  // };

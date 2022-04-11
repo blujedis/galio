@@ -1,34 +1,77 @@
 /* eslint-disable object-curly-newline */
-import React from 'react';
-import { Image, StyleSheet } from 'react-native';
+import React, { PropsWithChildren } from 'react';
+import { Image, StyleSheet, ImageStyle, ViewStyle } from 'react-native';
 import PropTypes from 'prop-types';
 // galio components
 import Block from './Block';
 import Text from './atomic/ions/Text';
 import Icon from './atomic/ions/Icon';
 import GalioTheme, { withGalio } from './theme';
+import { BaseProps, InternalProps, ThemeType } from './types';
 
-function Card({
-  avatar,
-  borderless, 
-  caption, 
-  captionColor,
-  card, 
-  children,
-  footerStyle,
-  image,
-  imageBlockStyle,
-  imageStyle,
-  location, 
-  locationColor, 
-  shadow,
-  style, 
-  styles,
-  title, 
-  titleColor,
-  theme,
-  ...props 
-}) {
+export type CardStyles = ReturnType<typeof styles>;
+
+
+export interface CardProps extends BaseProps {
+  card?: boolean;
+  shadow?: boolean;
+  borderless?: boolean;
+  image?: string;
+  imageBlockStyle?: string;
+  imageStyle?: ImageStyle;
+  avatar?: string;
+  location?: string;
+  locationColor?: boolean | string;
+  title?: string;
+  titleColor?: string;
+  caption?: string;
+  captionColor?: string;
+  footerStyle?: ViewStyle;
+}
+
+const DefaultCardProps: CardProps = {
+  card: true,
+  shadow: true,
+  borderless: false,
+  styles: {},
+  theme: GalioTheme,
+  title: '',
+  titleColor: '',
+  caption: '',
+  captionColor: '',
+  footerStyle: {},
+  avatar: '',
+};
+
+function Card(props: PropsWithChildren<CardProps>) {
+
+  props = {
+    ...DefaultCardProps,
+    ...props
+  };
+
+  const {
+    avatar,
+    borderless, 
+    caption, 
+    captionColor,
+    card, 
+    children,
+    footerStyle,
+    image,
+    imageBlockStyle,
+    imageStyle,
+    location, 
+    locationColor, 
+    shadow,
+    style, 
+    styles,
+    title, 
+    titleColor,
+    theme,
+    ...rest 
+  } = props as InternalProps<CardProps, CardStyles>;
+
   function renderImage() {
     if (!image) return null;
     return (
@@ -95,7 +138,7 @@ function Card({
   const styleCard = [borderless && { borderWidth: 0 }, style];
 
   return (
-    <Block {...props} card={card} shadow={shadow} style={styleCard}>
+    <Block {...rest} card={card} shadow={shadow} style={styleCard}>
       {renderImage()}
       {renderAuthor()}
       {children}
@@ -103,35 +146,8 @@ function Card({
   );
 }
 
-Card.defaultProps = {
-  card: true,
-  shadow: true,
-  borderless: false,
-  styles: {},
-  theme: GalioTheme,
-  title: '',
-  titleColor: '',
-  caption: '',
-  captionColor: '',
-  footerStyle: {},
-  avatar: '',
-};
 
-Card.propTypes = {
-  card: PropTypes.bool,
-  shadow: PropTypes.bool,
-  borderless: PropTypes.bool,
-  styles: PropTypes.any,
-  theme: PropTypes.any,
-  title: PropTypes.string,
-  titleColor: PropTypes.string,
-  caption: PropTypes.string,
-  captionColor: PropTypes.string,
-  avatar: PropTypes.string,
-  footerStyle: PropTypes.object,
-};
-
-const styles = theme =>
+const styles = (theme: ThemeType) =>
   StyleSheet.create({
     card: {
       borderWidth: 0,
@@ -172,3 +188,32 @@ const styles = theme =>
   });
 
 export default withGalio(Card, styles);
+
+
+// Card.defaultProps = {
+//   card: true,
+//   shadow: true,
+//   borderless: false,
+//   styles: {},
+//   theme: GalioTheme,
+//   title: '',
+//   titleColor: '',
+//   caption: '',
+//   captionColor: '',
+//   footerStyle: {},
+//   avatar: '',
+// };
+
+// Card.propTypes = {
+//   card: PropTypes.bool,
+//   shadow: PropTypes.bool,
+//   borderless: PropTypes.bool,
+//   styles: PropTypes.any,
+//   theme: PropTypes.any,
+//   title: PropTypes.string,
+//   titleColor: PropTypes.string,
+//   caption: PropTypes.string,
+//   captionColor: PropTypes.string,
+//   avatar: PropTypes.string,
+//   footerStyle: PropTypes.object,
+// };

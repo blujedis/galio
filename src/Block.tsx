@@ -1,9 +1,58 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { View, StyleSheet, SafeAreaView } from 'react-native';
-import PropTypes from 'prop-types';
-import GalioTheme, { withGalio } from './theme';
 
-function Block({
+import GalioTheme, { withGalio } from './theme';
+import { BaseProps, InternalProps, ThemeType } from './types';
+
+export type BlockStyles = ReturnType<typeof styles>;
+
+export interface BlockProps extends BaseProps {
+  bottom?: boolean;
+  card?: boolean;
+  center?: boolean;
+  flex?: boolean | number;
+  fluid?: boolean;
+  height?: number;
+  left?: boolean;
+  middle?: boolean;
+  right?: boolean;
+  row?: boolean;
+  safe?: boolean;
+  shadow?: boolean;
+  shadowColor?: boolean;
+  space?: 'between' | 'around' | 'evenly';
+  top?: boolean;
+  width?: number;
+}
+
+const BlockDefaultProps: BlockProps = {
+  row: false,
+  flex: false,
+  center: false,
+  middle: false,
+  top: false,
+  bottom: false,
+  right: false,
+  left: false,
+  card: false,
+  shadow: false,
+  // space: null,
+  fluid: false,
+  // height: null,
+  // width: null,
+  // shadowColor: null,
+  safe: false,
+  styles: {},
+  theme: GalioTheme,
+};
+
+function Block(props: PropsWithChildren<BlockProps>) {
+  props = {
+    ...BlockDefaultProps,
+    ...props,
+  };
+
+  const {
     row,
     flex,
     center,
@@ -24,7 +73,7 @@ function Block({
     style,
     styles,
     ...rest
-}) {
+  } = props as InternalProps<BlockProps, BlockStyles>;
 
   const styleBlock = [
     styles.block,
@@ -55,55 +104,13 @@ function Block({
   }
 
   return (
-    <View  style={styleBlock} {...rest}>
+    <View style={styleBlock} {...rest}>
       {children}
     </View>
   );
 }
 
-Block.defaultProps = {
-  row: false,
-  flex: false,
-  center: false,
-  middle: false,
-  top: false,
-  bottom: false,
-  right: false,
-  left: false,
-  card: false,
-  shadow: false,
-  space: null,
-  fluid: false,
-  height: null,
-  width: null,
-  shadowColor: null,
-  safe: false,
-  styles: {},
-  theme: GalioTheme,
-};
-
-Block.propTypes = {
-  row: PropTypes.bool,
-  flex: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
-  center: PropTypes.bool,
-  middle: PropTypes.bool,
-  top: PropTypes.bool,
-  bottom: PropTypes.bool,
-  right: PropTypes.bool,
-  card: PropTypes.bool,
-  left: PropTypes.bool,
-  shadow: PropTypes.bool,
-  space: PropTypes.oneOf(['between', 'around', 'evenly' ]),
-  fluid: PropTypes.bool,
-  height: PropTypes.number,
-  width: PropTypes.number,
-  shadowColor: PropTypes.string,
-  safe: PropTypes.bool,
-  styles: PropTypes.any,
-  theme: PropTypes.any,
-};
-
-const styles = theme =>
+const styles = (theme: ThemeType) =>
   StyleSheet.create({
     block: {
       flexDirection: 'column',
@@ -154,3 +161,46 @@ const styles = theme =>
   });
 
 export default withGalio(Block, styles);
+
+
+// Block.defaultProps = {
+//   row: false,
+//   flex: false,
+//   center: false,
+//   middle: false,
+//   top: false,
+//   bottom: false,
+//   right: false,
+//   left: false,
+//   card: false,
+//   shadow: false,
+//   space: null,
+//   fluid: false,
+//   height: null,
+//   width: null,
+//   shadowColor: null,
+//   safe: false,
+//   styles: {},
+//   theme: GalioTheme,
+// };
+
+// Block.propTypes = {
+//   row: PropTypes.bool,
+//   flex: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
+//   center: PropTypes.bool,
+//   middle: PropTypes.bool,
+//   top: PropTypes.bool,
+//   bottom: PropTypes.bool,
+//   right: PropTypes.bool,
+//   card: PropTypes.bool,
+//   left: PropTypes.bool,
+//   shadow: PropTypes.bool,
+//   space: PropTypes.oneOf(['between', 'around', 'evenly' ]),
+//   fluid: PropTypes.bool,
+//   height: PropTypes.number,
+//   width: PropTypes.number,
+//   shadowColor: PropTypes.string,
+//   safe: PropTypes.bool,
+//   styles: PropTypes.any,
+//   theme: PropTypes.any,
+// };

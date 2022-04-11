@@ -14,8 +14,7 @@ import { PixelRatio, Dimensions } from 'react-native';
 const pixelRatio = PixelRatio.get();
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
-
-export const normalize = (size: number) => {
+const normalize = (size: number) => {
 
   if (pixelRatio >= 2 && pixelRatio < 3) {
 
@@ -88,3 +87,5 @@ export const normalize = (size: number) => {
   return size;
   
 };
+
+export default normalize;

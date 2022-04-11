@@ -1,33 +1,78 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ReactNode } from 'react';
 import {
   Animated,
   TouchableWithoutFeedback,
   FlatList,
   StyleSheet,
-  Dimensions
-} from "react-native";
-import PropTypes from "prop-types";
+  Dimensions,
+  TextStyle
+} from 'react-native';
 
-import Block from "./Block";
-import Icon from "./atomic/ions/Icon";
-import Text from "./atomic/ions/Text";
-import GalioTheme from "./theme";
+import Block from './Block';
+import Icon from './atomic/ions/Icon';
+import Text from './atomic/ions/Text';
+import GalioTheme, { withGalio } from './theme';
+import { BaseProps, InternalProps, ThemeType } from './types';
+
+export type AccordianStyles = ReturnType<typeof styles>;
+
+export interface AccordianHeaderProps {
+  expanded: any;
+  expandedIcon: any;
+  headerStyle: any;
+  icon: any;
+  title: any;
+  chapterIcon: any;
+}
+
+export interface AccordianItemProps {
+  expanded: any;
+  expandedIcon: any;
+  headerStyle: any;
+  contentStyle: any;
+  icon: any;
+  index: any;
+  item: any;
+  onAccordionClose: any;
+  onAccordionOpen: any;
+  setSelected: any;
+}
+
+export interface AccordianProps extends BaseProps {
+  dataArray: any;
+  icon: any;
+  expandedIcon: any;
+  headerStyle: any;
+  contentStyle: any;
+  opened: any;
+  onAccordionOpen: any;
+  onAccordionClose: any;
+  listStyle: any;
+}
+
+const AccordianDefaultProps = {
+  theme: GalioTheme,
+  // opened: 0
+};
 
 const { width } = Dimensions.get("screen");
 
-// 
-function AccordionContent({ content, contentStyle }) {
+
+function AccordionContent({ content, contentStyle }: { content: ReactNode, contentStyle: TextStyle }) {
   return <Text style={[styles.content, contentStyle]}>{content}</Text>;
 }
 
-function AccordionHeader({
-  expanded,
-  expandedIcon,
-  headerStyle,
-  icon,
-  title,
-  chapterIcon
-}) {
+function AccordionHeader(props: AccordianHeaderProps) {
+
+  const {
+    expanded,
+    expandedIcon,
+    headerStyle,
+    icon,
+    title,
+    chapterIcon
+  } = props;
+
   return (
     <Block row middle style={[{ padding: 6 }, headerStyle]}>
       {chapterIcon ? (
@@ -43,27 +88,27 @@ function AccordionHeader({
         <Text size={16}>{title}</Text>
         {expanded
           ? expandedIcon || (
-              <Icon
-                name="keyboard-arrow-up"
-                family="material"
-                size={16}
-                color={GalioTheme.COLORS.MUTED}
-              />
-            )
+            <Icon
+              name="keyboard-arrow-up"
+              family="material"
+              size={16}
+              color={GalioTheme.COLORS.MUTED}
+            />
+          )
           : icon || (
-              <Icon
-                name="keyboard-arrow-down"
-                family="material"
-                size={16}
-                color={GalioTheme.COLORS.MUTED}
-              />
-            )}
+            <Icon
+              name="keyboard-arrow-down"
+              family="material"
+              size={16}
+              color={GalioTheme.COLORS.MUTED}
+            />
+          )}
       </Block>
     </Block>
   );
 }
 
-function AccordionAnimation({ children, style }) {
+function AccordionAnimation({ children, style }: { children: ReactNode, style: any }) {
   const [fade, setFade] = useState(new Animated.Value(0.3));
 
   useEffect(() => {
@@ -81,18 +126,21 @@ function AccordionAnimation({ children, style }) {
   );
 }
 
-function AccordionItem({
-  expanded,
-  expandedIcon,
-  headerStyle,
-  contentStyle,
-  icon,
-  index,
-  item,
-  onAccordionClose,
-  onAccordionOpen,
-  setSelected
-}) {
+function AccordionItem(props: AccordianItemProps) {
+
+  const {
+    expanded,
+    expandedIcon,
+    headerStyle,
+    contentStyle,
+    icon,
+    index,
+    item,
+    onAccordionClose,
+    onAccordionOpen,
+    setSelected
+  } = props;
+
   return (
     <Block>
       <TouchableWithoutFeedback
@@ -125,19 +173,28 @@ function AccordionItem({
   );
 }
 
-function Accordion({
-  theme,
-  dataArray,
-  icon,
-  expandedIcon,
-  headerStyle,
-  contentStyle,
-  opened,
-  onAccordionOpen,
-  onAccordionClose,
-  listStyle,
-  style
-}) {
+function Accordion(props: AccordianProps) {
+
+  props = {
+    ...AccordianDefaultProps,
+    ...props
+  };
+
+  const {
+    dataArray,
+    icon,
+    expandedIcon,
+    headerStyle,
+    contentStyle,
+    opened,
+    onAccordionOpen,
+    onAccordionClose,
+    listStyle,
+    theme,
+    styles,
+    style
+  } = props as Omit<InternalProps<AccordianProps, AccordianStyles>, 'children'>;
+
   const [selected, setSelected] = useState(opened);
 
   return (
@@ -159,7 +216,7 @@ function Accordion({
             onAccordionClose={onAccordionClose}
             item={item}
             index={index}
-            setSelected={s => setSelected(selected === s ? undefined : s)}
+            setSelected={(s) => setSelected(selected === s ? undefined : s)}
           />
         )}
       />
@@ -167,26 +224,7 @@ function Accordion({
   );
 }
 
-Accordion.propTypes = {
-  theme: PropTypes.any,
-  dataArray: PropTypes.array,
-  opened: PropTypes.number,
-  listStyle: PropTypes.any,
-  style: PropTypes.any,
-  icon: PropTypes.any,
-  expandedIcon: PropTypes.any,
-  headerStyle: PropTypes.any,
-  contentStyle: PropTypes.any,
-  onAccordionClose: PropTypes.func,
-  onAccordionOpen: PropTypes.func,
-};
-
-Accordion.defaultProps = {
-  theme: GalioTheme,
-  opened: 0
-};
-
-const styles = StyleSheet.create({
+const styles = (theme: ThemeType) => StyleSheet.create({
   container: {
     flex: 1,
     width: width * 0.8,
@@ -206,4 +244,24 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Accordion;
+export default withGalio(Accordion, styles);
+
+// Accordion.propTypes = {
+//   theme: PropTypes.any,
+//   dataArray: PropTypes.array,
+//   opened: PropTypes.number,
+//   listStyle: PropTypes.any,
+//   style: PropTypes.any,
+//   icon: PropTypes.any,
+//   expandedIcon: PropTypes.any,
+//   headerStyle: PropTypes.any,
+//   contentStyle: PropTypes.any,
+//   onAccordionClose: PropTypes.func,
+//   onAccordionOpen: PropTypes.func,
+// };
+
+// Accordion.defaultProps = {
+//   theme: GalioTheme,
+//   opened: 0
+// };
+
