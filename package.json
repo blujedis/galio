@@ -29,7 +29,7 @@
     "copy": "cp -r ./src/fonts ./dist/cjs/fonts && cp -r ./src/fonts ./dist/esm/fonts",
     "format": "prettier --write src/**/*.ts{,x}",
     "lint": "npm run format && tsc --noEmit && eslint src/**/*.ts{,x}",
-    "build": "npm run clean && npm run copy && tsc -p tsconfig.json && tsc -p tsconfig.esm.json && npm",
+    "build": "npm run clean && tsc -p tsconfig.json && tsc -p tsconfig.esm.json && npm run copy",
     "precommit": "npm run lint && npm run build",
     "test": "jest",
     "postinstall": "opencollective-postinstall"

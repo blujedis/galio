@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = require("react");
+const react_native_1 = require("react-native");
 const react_native_vector_icons_1 = require("react-native-vector-icons");
 const galio_json_1 = require("../../config/galio.json");
 const getIconType_1 = require("../../helpers/getIconType");
@@ -13,7 +14,8 @@ const IconDefaultProps = {
     styles: {},
     theme: theme_1.default,
 };
-const Galio = (0, react_native_vector_icons_1.createIconSetFromIcoMoon)(galio_json_1.default, 'Galio', './fonts/galio.ttf');
+const fontPath = react_native_1.Platform.OS === 'ios' ? undefined : './fonts/galio.ttf';
+const Galio = (0, react_native_vector_icons_1.createIconSetFromIcoMoon)(galio_json_1.default, 'Galio', fontPath);
 // Galio Fonts have to be linked with 'react-native link' if you're using react-native-cli
 // Galio Fonts have to loaded with Fonts.loadAsync if you're
 // using Expo (you can export GalioFont from index in order to import it)
