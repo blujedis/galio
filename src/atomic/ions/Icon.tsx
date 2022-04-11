@@ -1,11 +1,11 @@
 import React from 'react';
+import { Platform } from 'react-native';
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons';
 
+import galioConfig from '../../config/galio.json';
 import getIconType, { IconFamilyType } from '../../helpers/getIconType';
 import GalioTheme, { withGalio } from '../../theme';
 import { BaseProps, InternalProps } from '../../types';
-
-const galioConfig = require('../../config/galio.json');
 
 export interface IconProps extends BaseProps {
   name?: string;
@@ -23,7 +23,9 @@ const IconDefaultProps: IconProps = {
   theme: GalioTheme,
 };
 
-const Galio = createIconSetFromIcoMoon(galioConfig, 'Galio', './fonts/galio.ttf');
+const fontPath = Platform.OS === 'ios' ? undefined : './fonts/galio.ttf';
+
+const Galio = createIconSetFromIcoMoon(galioConfig, 'Galio', fontPath);
 
 // Galio Fonts have to be linked with 'react-native link' if you're using react-native-cli
 // Galio Fonts have to loaded with Fonts.loadAsync if you're
