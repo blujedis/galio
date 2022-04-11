@@ -1,8 +1,5 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-cp -r ./src/fonts ./dist/cjs/fonts/ && cp -r ./src/fonts ./dist/esm/fonts/
-cp -r ./src/config ./dist/cjs/config/ && cp -r ./src/config ./dist/esm/config/
+npm run precommit
 git add .
-
-# npm precommit

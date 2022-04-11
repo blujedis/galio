@@ -30,7 +30,7 @@
     "copy:config": "cp -r ./src/config ./dist/cjs/config && cp -r ./src/config ./dist/esm/config",
     "copy": "npm run copy:fonts && npm run copy:config",
     "format": "prettier --write src/**/*.ts{,x}",
-    "lint": "npm run format && tsc --noEmit && eslint src/**/*.ts{,x}",
+    "lint": "tsc --noEmit && eslint src/**/*.ts{,x}",
     "build": "npm run clean && tsc -p tsconfig.json && tsc -p tsconfig.esm.json && npm run copy",
     "precommit": "npm run format && npm run lint && npm run build",
     "test": "jest",
