@@ -21,6 +21,8 @@ import theme, { withGalio, GalioProvider, useGalioTheme } from './theme';
 
 // const GalioFont = require('./fonts/galio.ttf');
 
+export * from './types';
+
 export {
   Accordion,
   Block,

@@ -18,5 +18,6 @@ import { GalioFont, galioConfig } from './init';
 // import galioConfig from './config/galio.json';
 import theme, { withGalio, GalioProvider, useGalioTheme } from './theme';
 // const GalioFont = require('./fonts/galio.ttf');
+export * from './types';
 export { Accordion, Block, Button, Card, Checkbox, DeckSwiper, Icon, Input, NavBar, Radio, Slider, Text, Link, Toast, Switch, theme, withGalio, GalioProvider, useGalioTheme, galioConfig, GalioFont, };
 //# sourceMappingURL=index.js.map

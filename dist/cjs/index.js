@@ -1,4 +1,18 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GalioFont = exports.galioConfig = exports.useGalioTheme = exports.GalioProvider = exports.withGalio = exports.theme = exports.Switch = exports.Toast = exports.Link = exports.Text = exports.Slider = exports.Radio = exports.NavBar = exports.Input = exports.Icon = exports.DeckSwiper = exports.Checkbox = exports.Card = exports.Button = exports.Block = exports.Accordion = void 0;
 /* eslint-disable import/no-cycle */
@@ -41,4 +55,6 @@ exports.theme = theme_1.default;
 Object.defineProperty(exports, "withGalio", { enumerable: true, get: function () { return theme_1.withGalio; } });
 Object.defineProperty(exports, "GalioProvider", { enumerable: true, get: function () { return theme_1.GalioProvider; } });
 Object.defineProperty(exports, "useGalioTheme", { enumerable: true, get: function () { return theme_1.useGalioTheme; } });
+// const GalioFont = require('./fonts/galio.ttf');
+__exportStar(require("./types"), exports);
 //# sourceMappingURL=index.js.map
