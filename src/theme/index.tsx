@@ -1,7 +1,15 @@
-import React, { forwardRef, createContext, useContext, PropsWithChildren, ForwardRefExoticComponent, FC, Component as ReactComponent } from 'react';
-import { ThemeType } from '../types';
+import React, {
+  forwardRef,
+  createContext,
+  useContext,
+  PropsWithChildren,
+  ForwardRefExoticComponent,
+  FC,
+  Component as ReactComponent,
+} from 'react';
 
 // import COLORS & SIZES
+import { ThemeType } from '../types';
 import GALIO_COLORS from './colors';
 import GALIO_SIZES from './sizes';
 
@@ -28,20 +36,21 @@ export function useGalioTheme() {
   return theme;
 }
 
-
 /*
  *   withGalio
  *   args: Component - React Component, styles to be added to Component
  *   theme: if no styles or theme add default theme={ SIZES, COLORS }
  */
 export const withGalio = <P extends Record<string, any>, S extends StylesFn = StylesFn>(
-  Component: FC<P> | typeof ReactComponent | ForwardRefExoticComponent<P>, styles?: S) => {
+  Component: FC<P> | typeof ReactComponent | ForwardRefExoticComponent<P>,
+  styles?: S
+) => {
   type Ref = typeof Component extends FC ? ReturnType<typeof Component> : typeof Component;
 
   const EnhancedComponent = forwardRef<Ref, P>((props, forwardedRef) => {
     return (
       <GalioContext.Consumer>
-        {theme => (
+        {(theme) => (
           <Component
             ref={forwardedRef}
             {...props}
@@ -51,26 +60,23 @@ export const withGalio = <P extends Record<string, any>, S extends StylesFn = St
         )}
       </GalioContext.Consumer>
     );
-
   });
   EnhancedComponent.displayName = Component.name;
   return EnhancedComponent;
 };
 
-export function GalioProvider<T extends ThemeType & { customTheme?: Record<string, any> }>(
-  { theme, children }: PropsWithChildren<{ theme: T }>) {
+export function GalioProvider<T extends ThemeType & { customTheme?: Record<string, any> }>({
+  theme,
+  children,
+}: PropsWithChildren<{ theme: T }>) {
   const { COLORS: CUSTOM_COLORS, SIZES: CUSTOM_SIZES, customTheme } = theme;
   const providerTheme = {
     COLORS: { ...GalioTheme.COLORS, ...CUSTOM_COLORS },
     SIZES: { ...GalioTheme.SIZES, ...CUSTOM_SIZES },
     ...customTheme,
   };
-  return (
-    <GalioContext.Provider value={providerTheme}>
-      {children}
-    </GalioContext.Provider>
-  );
-};
+  return <GalioContext.Provider value={providerTheme}>{children}</GalioContext.Provider>;
+}
 
 export default GalioTheme;
 
@@ -98,10 +104,8 @@ export default GalioTheme;
 //     }
 //   }
 
-
 //   return forwardRef((props, ref) => {
 //     return <EnhancedComponent forwardedRef={ref} {...props} />;
 //   });
 
 // }
-

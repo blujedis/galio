@@ -5,49 +5,61 @@ import {
   FlatList,
   StyleSheet,
   Dimensions,
-  TextStyle
+  TextStyle,
+  ViewStyle
 } from 'react-native';
 
 import Block from './Block';
-import Icon from './atomic/ions/Icon';
+import Icon, { IconProps } from './atomic/ions/Icon';
 import Text from './atomic/ions/Text';
 import GalioTheme, { withGalio } from './theme';
 import { BaseProps, InternalProps, ThemeType } from './types';
 
 export type AccordianStyles = ReturnType<typeof styles>;
 
+export type AccordianActionHandler = (item?: AccordianItem, index?: number) => void;
+
+export type AccordianItem = {
+  title: string;
+  content: ReactNode;
+  icon: IconProps;
+} & Record<string, unknown>;
+
 export interface AccordianHeaderProps {
-  expanded: any;
-  expandedIcon: any;
-  headerStyle: any;
-  icon: any;
-  title: any;
-  chapterIcon: any;
+  expanded: boolean;
+  expandedIcon: IconProps;
+  chapterIcon: IconProps;
+  headerStyle: ViewStyle;
+  title: ReactNode;
+  icon: typeof Icon;
 }
 
-export interface AccordianItemProps {
-  expanded: any;
-  expandedIcon: any;
-  headerStyle: any;
-  contentStyle: any;
-  icon: any;
-  index: any;
-  item: any;
-  onAccordionClose: any;
-  onAccordionOpen: any;
-  setSelected: any;
+export interface AccordianItemsProps {
+  expanded: boolean;
+  expandedIcon: IconProps;
+  headerStyle: ViewStyle;
+  contentStyle: TextStyle;
+  animationStyle: ViewStyle;
+  icon: typeof Icon;
+  index: number;
+  item: AccordianItem;
+  onAccordionOpen: AccordianActionHandler;
+  onAccordionClose: AccordianActionHandler;
+  setSelected: (index: number) => void;
+  styles: AccordianStyles;
 }
 
 export interface AccordianProps extends BaseProps {
-  dataArray: any;
-  icon: any;
-  expandedIcon: any;
-  headerStyle: any;
-  contentStyle: any;
-  opened: any;
-  onAccordionOpen: any;
-  onAccordionClose: any;
-  listStyle: any;
+  dataArray: AccordianItem[];
+  icon: typeof Icon;
+  expandedIcon: IconProps;
+  headerStyle: ViewStyle;
+  contentStyle: TextStyle;
+  listStyle: ViewStyle;
+  animationStyle: ViewStyle;
+  opened: boolean;
+  onAccordionOpen: AccordianActionHandler;
+  onAccordionClose: AccordianActionHandler;
 }
 
 const AccordianDefaultProps = {
@@ -58,8 +70,26 @@ const AccordianDefaultProps = {
 const { width } = Dimensions.get("screen");
 
 
-function AccordionContent({ content, contentStyle }: { content: ReactNode, contentStyle: TextStyle }) {
+function AccordionContent({ content, contentStyle, styles }: { content: ReactNode, contentStyle: TextStyle, styles: AccordianStyles }) {
   return <Text style={[styles.content, contentStyle]}>{content}</Text>;
+}
+
+function AccordionAnimation({ children, style }: { children: ReactNode, style?: ViewStyle }) {
+  const [fade, setFade] = useState(new Animated.Value(0.3));
+
+  useEffect(() => {
+    Animated.timing(fade, {
+      toValue: 1,
+      duration: 400,
+      useNativeDriver: true,
+    }).start();
+  });
+
+  return (
+    <Animated.View style={{ ...style, opacity: fade }}>
+      {children}
+    </Animated.View>
+  );
 }
 
 function AccordionHeader(props: AccordianHeaderProps) {
@@ -70,7 +100,7 @@ function AccordionHeader(props: AccordianHeaderProps) {
     headerStyle,
     icon,
     title,
-    chapterIcon
+    chapterIcon,
   } = props;
 
   return (
@@ -108,37 +138,21 @@ function AccordionHeader(props: AccordianHeaderProps) {
   );
 }
 
-function AccordionAnimation({ children, style }: { children: ReactNode, style: any }) {
-  const [fade, setFade] = useState(new Animated.Value(0.3));
-
-  useEffect(() => {
-    Animated.timing(fade, {
-      toValue: 1,
-      duration: 400,
-      useNativeDriver: true
-    }).start();
-  });
-
-  return (
-    <Animated.View style={{ ...style, opacity: fade }}>
-      {children}
-    </Animated.View>
-  );
-}
-
-function AccordionItem(props: AccordianItemProps) {
+function AccordionItem(props: AccordianItemsProps) {
 
   const {
     expanded,
     expandedIcon,
     headerStyle,
     contentStyle,
+    animationStyle,
     icon,
     index,
     item,
     onAccordionClose,
     onAccordionOpen,
-    setSelected
+    setSelected,
+    styles
   } = props;
 
   return (
@@ -162,10 +176,11 @@ function AccordionItem(props: AccordianItemProps) {
         </Block>
       </TouchableWithoutFeedback>
       {expanded ? (
-        <AccordionAnimation>
+        <AccordionAnimation style={animationStyle}>
           <AccordionContent
             content={item.content}
             contentStyle={contentStyle}
+            styles={styles}
           />
         </AccordionAnimation>
       ) : null}
@@ -190,6 +205,7 @@ function Accordion(props: AccordianProps) {
     onAccordionOpen,
     onAccordionClose,
     listStyle,
+    animationStyle,
     theme,
     styles,
     style
@@ -212,8 +228,10 @@ function Accordion(props: AccordianProps) {
             icon={icon}
             headerStyle={headerStyle}
             contentStyle={contentStyle}
+            animationStyle={animationStyle}
             onAccordionOpen={onAccordionOpen}
             onAccordionClose={onAccordionClose}
+            styles={styles}
             item={item}
             index={index}
             setSelected={(s) => setSelected(selected === s ? undefined : s)}

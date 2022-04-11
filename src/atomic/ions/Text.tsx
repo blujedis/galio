@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 
 import normalize from '../../helpers/normalize';
 import GalioTheme, { withGalio } from '../../theme';
-import { BaseInternalProps, BaseProps, InternalProps } from '../../types';
+import {  BaseProps, InternalProps } from '../../types';
 
 export interface TextProps extends BaseProps {
   h1?: boolean;

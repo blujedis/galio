@@ -5,7 +5,7 @@ const { height, width } = Dimensions.get('screen');
 export const BASE = 16;
 
 const SIZES = {
-  BASE: BASE,
+  BASE,
   FONT: BASE,
   OPACITY: 0.6,
   BORDER_RADIUS: 4,
@@ -39,7 +39,7 @@ const SIZES = {
   // Card styles
   CARD_BORDER_RADIUS: BASE * 0.4,
   CARD_BORDER_WIDTH: BASE * 0.05,
-  CARD_WIDTH: width - (BASE * 2),
+  CARD_WIDTH: width - BASE * 2,
   CARD_MARGIN_VERTICAL: BASE * 0.875,
   CARD_FOOTER_HORIZONTAL: BASE * 0.75,
   CARD_FOOTER_VERTICAL: BASE * 0.75,
@@ -80,12 +80,11 @@ const SIZES = {
   // Slider
   TRACK_SIZE: 4,
   THUMB_SIZE: 25,
-  
+
   // Radio Button
   RADIO_WIDTH: 24,
   RADIO_HEIGHT: 24,
   RADIO_THICKNESS: 2,
-
 };
 
 export default SIZES;
