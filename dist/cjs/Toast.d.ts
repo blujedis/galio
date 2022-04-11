@@ -27,6 +27,7 @@ declare const _default: React.ForwardRefExoticComponent<{
             FACEBOOK: string;
             TWITTER: string;
             DRIBBBLE: string;
+            BODY: string;
             THEME: string;
             PRIMARY: string;
             DARK_PRIMARY: string;
@@ -147,6 +148,7 @@ declare const _default: React.ForwardRefExoticComponent<{
             FACEBOOK: string;
             TWITTER: string;
             DRIBBBLE: string;
+            BODY: string;
             THEME: string;
             PRIMARY: string;
             DARK_PRIMARY: string;
@@ -267,6 +269,7 @@ declare const _default: React.ForwardRefExoticComponent<{
             FACEBOOK: string;
             TWITTER: string;
             DRIBBBLE: string;
+            BODY: string;
             THEME: string;
             PRIMARY: string;
             DARK_PRIMARY: string;

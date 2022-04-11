@@ -6,6 +6,7 @@ declare const GalioTheme: {
         FACEBOOK: string;
         TWITTER: string;
         DRIBBBLE: string;
+        BODY: string;
         THEME: string;
         PRIMARY: string;
         DARK_PRIMARY: string;

@@ -3,7 +3,7 @@ import { ActivityIndicator, Dimensions, StyleSheet, TouchableOpacity, Text, Touc
 
 // galio components
 import Icon from '../ions/Icon';
-import GalioTheme, {  withGalio } from '../../theme';
+import GalioTheme, { withGalio } from '../../theme';
 import { BaseInternalProps, BaseProps, InternalProps, ThemeType } from '../../types';
 
 type ButtonStyles = ReturnType<typeof styles>;
@@ -42,7 +42,7 @@ const ButtonDefaultProps: ButtonProps = {
   onlyIcon: false,
   loading: false,
   loadingSize: 'small',
-  opacity: .8,
+  opacity: 0.8,
   icon: false,
   iconRight: false,
   iconFamily: false,
@@ -54,10 +54,9 @@ const ButtonDefaultProps: ButtonProps = {
 const { width } = Dimensions.get('window');
 
 function Button(props: PropsWithChildren<ButtonProps>) {
-
   props = {
     ...ButtonDefaultProps,
-    ...props
+    ...props,
   };
 
   const {
@@ -86,8 +85,7 @@ function Button(props: PropsWithChildren<ButtonProps>) {
     textStyle,
     uppercase,
     ...rest
-
-  } = props as InternalProps<ButtonProps, ButtonStyles>; 
+  } = props as InternalProps<ButtonProps, ButtonStyles>;
 
   function renderContent() {
     const textStyles = [styles.customText, textStyle];
@@ -117,7 +115,7 @@ function Button(props: PropsWithChildren<ButtonProps>) {
           <Text>{content}</Text>
         </>
       );
-    };
+    }
     if (iconRight && !onlyIcon) {
       content = (
         <>
@@ -130,7 +128,7 @@ function Button(props: PropsWithChildren<ButtonProps>) {
           />
         </>
       );
-    };
+    }
 
     if (onlyIcon) {
       content = (
@@ -160,7 +158,9 @@ function Button(props: PropsWithChildren<ButtonProps>) {
     color && !colorStyle && { backgroundColor: color }, // color set & no styles for that color
     color === 'transparent' || styles.androidShadow,
     color === 'transparent' && !shadowless && { borderWidth: 1, borderColor: theme.COLORS.WHITE },
-    size === 'large' ? { width: width * 0.9 } : (size === "small" ? { width: width * 0.3 } : { width: width * 0.42 }),
+    size === 'large'
+      ? { width: width * 0.9 }
+      : (size === "small" ? { width: width * 0.3 }: { width: width * 0.42 }),
     round && { borderRadius: theme.SIZES.BASE * 2 },
 
     onlyIcon && {
