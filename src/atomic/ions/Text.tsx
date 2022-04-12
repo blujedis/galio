@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 
 import normalize from '../../helpers/normalize';
 import GalioTheme, { withGalio } from '../../theme';
-import {  BaseProps, InternalProps } from '../../types';
+import { BaseProps, InternalProps } from '../../types';
 
 export interface TextProps extends BaseProps {
   h1?: boolean;
@@ -19,7 +19,7 @@ export interface TextProps extends BaseProps {
   italic?: boolean;
 }
 
-const TextDefaultProps: TextProps = {
+const DefaultTextProps: TextProps = {
   // children: null,
   // style: null,
   h1: false,
@@ -32,7 +32,6 @@ const TextDefaultProps: TextProps = {
   body: false,
   small: false,
   size: 0,
-  // color: null,
   muted: false,
   bold: false,
   italic: false,
@@ -41,10 +40,9 @@ const TextDefaultProps: TextProps = {
 };
 
 function Typography(props: PropsWithChildren<TextProps>) {
-
   props = {
-    ...TextDefaultProps,
-    ...props
+    ...DefaultTextProps,
+    ...props,
   };
 
   const {
@@ -69,7 +67,7 @@ function Typography(props: PropsWithChildren<TextProps>) {
     styles,
     theme,
     ...rest
-  } = props as InternalProps<TextProps>; 
+  } = props as InternalProps<TextProps>;
 
   return (
     <Text
@@ -86,7 +84,7 @@ function Typography(props: PropsWithChildren<TextProps>) {
         muted && { color: theme.COLORS.MUTED },
         neutral && { color: theme.COLORS.NEUTRAL },
         size && { fontSize: size },
-        color && { color },
+        { color: !color ? theme.COLORS.BODY : color },
         italic && { fontStyle: 'italic' },
         bold && { fontWeight: 'bold' },
         center && { textAlign: 'center' },

@@ -7,6 +7,7 @@ exports.SOCIAL = {
     DRIBBBLE: '#EA4C89',
 };
 exports.THEME = {
+    BODY: '#2A2F36',
     THEME: '#FE2472',
     PRIMARY: '#FE2472',
     DARK_PRIMARY: '#F4075C',
@@ -43,17 +44,6 @@ exports.THEME = {
     LIGHT_GREY: '#F0F1F4',
     NEUTRAL: 'rgba(255,255,255, 0.65)',
 };
-// export const SHADOWS = {
-//   PRIMARY: 0 13px 11px -8 rgba(254, 36, 114, .30),
-//   INFO: 0 13px 11px -8 rgba(14, 42, 221, .30),
-//   SUCCESS: 0 13px 11px -8 rgba(24, 206, 15, .30),
-//   WARNING: 0 13px 11px -8 rgba(255, 156, 9, .30),
-//   DANGER: 0 13px 11px -8 rgba(255, 63, 49, .30),
-//   BLACK: 0 13px 11px -8 rgba(0, 0, 0, .30),
-//   WHITE: 0 10px 20px -8 rgba(210, 210, 210, .100),
-//   GREY: 0 13px 11px -8 rgba(152, 152, 152, .30),
-//   LIGHT_GREY: 0 13px 11px -8 rgba(149, 149, 149, .30),
-// };
 exports.COMPONENTS = {
     INPUT: '#808080',
     PLACEHOLDER: '#9FA5AA',

@@ -32,10 +32,12 @@ function AccordionHeader(props) {
     return (<Block_1.default row middle style={[{ padding: 6 }, headerStyle]}>
       {chapterIcon ? (<Icon_1.default name={chapterIcon.name} family={chapterIcon.family} size={chapterIcon.size || 14} color={chapterIcon.color || theme_1.default.COLORS.PRIMARY} style={chapterIcon.style || { marginRight: 5 }}/>) : null}
       <Block_1.default row space="between" middle flex>
-        <Text_1.default size={16}>{title}</Text_1.default>
-        {expanded
+        <>
+          <Text_1.default size={16}>{title}</Text_1.default>
+          {expanded
             ? expandedIcon || (<Icon_1.default name="keyboard-arrow-up" family="material" size={16} color={theme_1.default.COLORS.MUTED}/>)
             : icon || (<Icon_1.default name="keyboard-arrow-down" family="material" size={16} color={theme_1.default.COLORS.MUTED}/>)}
+        </>
       </Block_1.default>
     </Block_1.default>);
 }

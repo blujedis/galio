@@ -67,5 +67,5 @@ declare const styles: (theme: ThemeType) => {
         width: string;
     };
 };
-declare const _default: React.ForwardRefExoticComponent<Pick<React.PropsWithChildren<BlockProps>, keyof BlockProps> & React.RefAttributes<typeof React.Component | React.FC<React.PropsWithChildren<BlockProps>> | React.ForwardRefExoticComponent<React.PropsWithChildren<BlockProps>>>>;
+declare const _default: React.FC<React.PropsWithChildren<BlockProps>>;
 export default _default;

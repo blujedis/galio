@@ -56,5 +56,5 @@ declare const styles: (theme: ThemeType) => {
         borderRadius: number;
     };
 };
-declare const _default: React.ForwardRefExoticComponent<Pick<React.PropsWithChildren<CardProps>, keyof CardProps> & React.RefAttributes<typeof React.Component | React.FC<React.PropsWithChildren<CardProps>> | React.ForwardRefExoticComponent<React.PropsWithChildren<CardProps>>>>;
+declare const _default: React.FC<React.PropsWithChildren<CardProps>>;
 export default _default;

@@ -60,5 +60,5 @@ declare const styles: (theme: ThemeType) => {
         borderWidth: number;
     };
 };
-declare const _default: React.ForwardRefExoticComponent<Pick<NavBarProps, keyof NavBarProps> & React.RefAttributes<typeof React.Component | React.FC<NavBarProps> | React.ForwardRefExoticComponent<NavBarProps>>>;
+declare const _default: React.FC<NavBarProps>;
 export default _default;

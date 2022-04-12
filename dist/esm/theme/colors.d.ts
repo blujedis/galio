@@ -4,6 +4,7 @@ export declare const SOCIAL: {
     DRIBBBLE: string;
 };
 export declare const THEME: {
+    BODY: string;
     THEME: string;
     PRIMARY: string;
     DARK_PRIMARY: string;
@@ -51,6 +52,7 @@ declare const COLORS: {
     FACEBOOK: string;
     TWITTER: string;
     DRIBBBLE: string;
+    BODY: string;
     THEME: string;
     PRIMARY: string;
     DARK_PRIMARY: string;

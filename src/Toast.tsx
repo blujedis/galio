@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from 'react';
+import React, { Component, PropsWithChildren, ReactNode } from 'react';
 import { Dimensions, StyleSheet, Animated, ViewStyle, TextStyle } from 'react-native';
 
 // Galio components
@@ -178,7 +178,9 @@ const styles = (theme: ThemeType) =>
     },
   });
 
-export default withGalio(Toast, styles);
+export default withGalio((props: PropsWithChildren<ToastProps>) => {
+  return <Toast { ...props} />;
+}, styles);
 
   // static propTypes = {
   //   children: PropTypes.node.isRequired,

@@ -103,7 +103,7 @@ function Card(props: PropsWithChildren<CardProps>) {
         <Text
           muted
           size={theme.SIZES.FONT * 0.875}
-          color={locationColor || theme.COLORS.MUTED}
+          color={(locationColor as string) || theme.COLORS.MUTED}
           style={{ marginLeft: theme.SIZES.BASE * 0.25 }}>
           {location}
         </Text>

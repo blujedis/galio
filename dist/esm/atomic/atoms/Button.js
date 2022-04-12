@@ -15,7 +15,7 @@ const ButtonDefaultProps = {
     onlyIcon: false,
     loading: false,
     loadingSize: 'small',
-    opacity: .8,
+    opacity: 0.8,
     icon: false,
     iconRight: false,
     iconFamily: false,
@@ -27,7 +27,7 @@ const { width } = Dimensions.get('window');
 function Button(props) {
     props = {
         ...ButtonDefaultProps,
-        ...props
+        ...props,
     };
     const { color, children, capitalize, disabled, iconSize, icon, iconRight, iconFamily, iconColor, loading, loadingSize, loadingColor, lowercase, onlyIcon, opacity, round, style, size, shadowless, shadowColor, styles, theme, textStyle, uppercase, ...rest } = props;
     function renderContent() {
@@ -50,14 +50,12 @@ function Button(props) {
           <Text>{content}</Text>
         </>);
         }
-        ;
         if (iconRight && !onlyIcon) {
             content = (<>
           <Text>{content}</Text>{' '}
           <Icon name={icon} family={iconFamily} size={iconSize} color={iconColor || theme.COLORS.WHITE}/>
         </>);
         }
-        ;
         if (onlyIcon) {
             content = (<Icon name={icon} family={iconFamily} size={iconSize} color={iconColor || theme.COLORS.WHITE}/>);
         }
@@ -76,7 +74,9 @@ function Button(props) {
         color && !colorStyle && { backgroundColor: color },
         color === 'transparent' || styles.androidShadow,
         color === 'transparent' && !shadowless && { borderWidth: 1, borderColor: theme.COLORS.WHITE },
-        size === 'large' ? { width: width * 0.9 } : (size === "small" ? { width: width * 0.3 } : { width: width * 0.42 }),
+        size === 'large'
+            ? { width: width * 0.9 }
+            : (size === "small" ? { width: width * 0.3 } : { width: width * 0.42 }),
         round && { borderRadius: theme.SIZES.BASE * 2 },
         onlyIcon && {
             width: iconSize * 2.75,
@@ -100,7 +100,7 @@ const styles = (theme) => StyleSheet.create({
         height: theme.SIZES.BUTTON_HEIGHT,
         alignItems: 'center',
         justifyContent: 'center',
-        margin: 8
+        margin: 8,
     },
     shadow: {
         shadowColor: theme.COLORS.BLOCK,

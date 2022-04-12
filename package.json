@@ -31,6 +31,7 @@
     "copy": "npm run copy:fonts && npm run copy:config",
     "format": "prettier --write src/**/*.ts{,x}",
     "lint": "tsc --noEmit && eslint src/**/*.ts{,x}",
+    "watch": "tsc -p tsconfig.json -w",
     "build": "npm run clean && tsc -p tsconfig.json && tsc -p tsconfig.esm.json && npm run copy",
     "precommit": "npm run format && npm run lint && npm run build",
     "test": "jest",
@@ -67,6 +68,9 @@
     "extends": [
       "universe/native",
       "universe/shared/typescript-analysis"
+    ],
+    "ignorePatterns": [
+      "dist/"
     ],
     "overrides": [
       {

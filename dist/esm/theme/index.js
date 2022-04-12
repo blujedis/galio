@@ -1,4 +1,4 @@
-import React, { forwardRef, createContext, useContext, } from 'react';
+import React, { forwardRef, createContext, useContext } from 'react';
 import GALIO_COLORS from './colors';
 import GALIO_SIZES from './sizes';
 // default theme with COLORS & SIZES
@@ -20,6 +20,8 @@ export function useGalioTheme() {
     return theme;
 }
 /*
+ *   TODO: need to rework these types, have to do for moment.
+ *
  *   withGalio
  *   args: Component - React Component, styles to be added to Component
  *   theme: if no styles or theme add default theme={ SIZES, COLORS }

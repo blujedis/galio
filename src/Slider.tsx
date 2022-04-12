@@ -303,4 +303,6 @@ const styles = (theme: ThemeType) =>
     },
   });
 
-export default withGalio(Slider, styles);
+export default withGalio((props: SliderProps) => {
+  return <Slider {...props} />;
+}, styles);

@@ -115,24 +115,26 @@ function AccordionHeader(props: AccordianHeaderProps) {
         />
       ) : null}
       <Block row space="between" middle flex>
-        <Text size={16}>{title}</Text>
-        {expanded
-          ? expandedIcon || (
-            <Icon
-              name="keyboard-arrow-up"
-              family="material"
-              size={16}
-              color={GalioTheme.COLORS.MUTED}
-            />
-          )
-          : icon || (
-            <Icon
-              name="keyboard-arrow-down"
-              family="material"
-              size={16}
-              color={GalioTheme.COLORS.MUTED}
-            />
-          )}
+        <>
+          <Text size={16}>{title}</Text>
+          {expanded
+            ? expandedIcon || (
+              <Icon
+                name="keyboard-arrow-up"
+                family="material"
+                size={16}
+                color={GalioTheme.COLORS.MUTED}
+              />
+            )
+            : icon || (
+              <Icon
+                name="keyboard-arrow-down"
+                family="material"
+                size={16}
+                color={GalioTheme.COLORS.MUTED}
+              />
+            )}
+        </>
       </Block>
     </Block>
   );

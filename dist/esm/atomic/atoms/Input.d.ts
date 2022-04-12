@@ -21,5 +21,5 @@ export interface InputProps extends Omit<TextInputProps, 'style' | 'keyboardType
     bottomHelp?: boolean;
     iconSize?: number;
 }
-declare const _default: React.ForwardRefExoticComponent<Pick<React.PropsWithChildren<InputProps>, keyof InputProps> & React.RefAttributes<typeof React.Component | React.FC<React.PropsWithChildren<InputProps>> | React.ForwardRefExoticComponent<React.PropsWithChildren<InputProps>>>>;
+declare const _default: React.FC<React.PropsWithChildren<InputProps>>;
 export default _default;

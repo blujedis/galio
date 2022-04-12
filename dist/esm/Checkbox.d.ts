@@ -54,5 +54,5 @@ declare const styles: (theme: ThemeType) => {
         height: number;
     };
 };
-declare const _default: React.ForwardRefExoticComponent<Pick<React.PropsWithChildren<CheckBoxProps>, keyof CheckBoxProps> & React.RefAttributes<typeof React.Component | React.FC<React.PropsWithChildren<CheckBoxProps>> | React.ForwardRefExoticComponent<React.PropsWithChildren<CheckBoxProps>>>>;
+declare const _default: React.FC<React.PropsWithChildren<CheckBoxProps>>;
 export default _default;

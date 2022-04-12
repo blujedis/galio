@@ -12,5 +12,5 @@ export interface SwitchProps extends RNSwitchProps, BaseProps {
     ios_backgroundColor?: string;
     onChange?: () => void;
 }
-declare const _default: React.ForwardRefExoticComponent<Pick<SwitchProps, keyof SwitchProps> & React.RefAttributes<typeof React.Component | React.FC<SwitchProps> | React.ForwardRefExoticComponent<SwitchProps>>>;
+declare const _default: React.FC<SwitchProps>;
 export default _default;

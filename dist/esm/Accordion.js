@@ -30,10 +30,12 @@ function AccordionHeader(props) {
     return (<Block row middle style={[{ padding: 6 }, headerStyle]}>
       {chapterIcon ? (<Icon name={chapterIcon.name} family={chapterIcon.family} size={chapterIcon.size || 14} color={chapterIcon.color || GalioTheme.COLORS.PRIMARY} style={chapterIcon.style || { marginRight: 5 }}/>) : null}
       <Block row space="between" middle flex>
-        <Text size={16}>{title}</Text>
-        {expanded
+        <>
+          <Text size={16}>{title}</Text>
+          {expanded
             ? expandedIcon || (<Icon name="keyboard-arrow-up" family="material" size={16} color={GalioTheme.COLORS.MUTED}/>)
             : icon || (<Icon name="keyboard-arrow-down" family="material" size={16} color={GalioTheme.COLORS.MUTED}/>)}
+        </>
       </Block>
     </Block>);
 }

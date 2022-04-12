@@ -130,7 +130,9 @@ const styles = (theme) => react_native_1.StyleSheet.create({
         backgroundColor: theme.COLORS.SUCCESS,
     },
 });
-exports.default = (0, theme_1.withGalio)(Toast, styles);
+exports.default = (0, theme_1.withGalio)((props) => {
+    return <Toast {...props}/>;
+}, styles);
 // static propTypes = {
 //   children: PropTypes.node.isRequired,
 //   isShow: PropTypes.bool.isRequired,
