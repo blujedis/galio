@@ -1,4 +1,4 @@
-import React, { forwardRef, createContext, useContext, } from 'react';
+import React, { forwardRef, createContext, useContext } from 'react';
 import GALIO_COLORS from './colors';
 import GALIO_SIZES from './sizes';
 // default theme with COLORS & SIZES

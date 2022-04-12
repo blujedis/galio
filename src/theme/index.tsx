@@ -1,12 +1,4 @@
-import React, {
-  forwardRef,
-  createContext,
-  useContext,
-  PropsWithChildren,
-
-  FC,
-  Component as ReactComponent,
-} from 'react';
+import React, { forwardRef, createContext, useContext, PropsWithChildren, FC } from 'react';
 
 // import COLORS & SIZES
 import { ThemeType } from '../types';
