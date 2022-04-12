@@ -4,7 +4,7 @@ const react_1 = require("react");
 const react_native_1 = require("react-native");
 const normalize_1 = require("../../helpers/normalize");
 const theme_1 = require("../../theme");
-const TextDefaultProps = {
+const DefaultTextProps = {
     // children: null,
     // style: null,
     h1: false,
@@ -17,7 +17,6 @@ const TextDefaultProps = {
     body: false,
     small: false,
     size: 0,
-    // color: null,
     muted: false,
     bold: false,
     italic: false,
@@ -26,8 +25,8 @@ const TextDefaultProps = {
 };
 function Typography(props) {
     props = {
-        ...TextDefaultProps,
-        ...props
+        ...DefaultTextProps,
+        ...props,
     };
     const { style, h1, h2, h3, h4, h5, h6, p, body, small, muted, neutral, size, color, bold, italic, center, children, styles, theme, ...rest } = props;
     return (<react_native_1.Text style={[
@@ -43,7 +42,7 @@ function Typography(props) {
             muted && { color: theme.COLORS.MUTED },
             neutral && { color: theme.COLORS.NEUTRAL },
             size && { fontSize: size },
-            color && { color },
+            { color: !color ? theme.COLORS.BODY : color },
             italic && { fontStyle: 'italic' },
             bold && { fontWeight: 'bold' },
             center && { textAlign: 'center' },

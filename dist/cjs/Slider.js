@@ -187,5 +187,7 @@ const styles = (theme) => react_native_1.StyleSheet.create({
         backgroundColor: theme.COLORS.MUTED,
     },
 });
-exports.default = (0, theme_1.withGalio)(Slider, styles);
+exports.default = (0, theme_1.withGalio)((props) => {
+    return <Slider {...props}/>;
+}, styles);
 //# sourceMappingURL=Slider.js.map

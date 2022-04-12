@@ -185,5 +185,7 @@ const styles = (theme) => StyleSheet.create({
         backgroundColor: theme.COLORS.MUTED,
     },
 });
-export default withGalio(Slider, styles);
+export default withGalio((props) => {
+    return <Slider {...props}/>;
+}, styles);
 //# sourceMappingURL=Slider.js.map

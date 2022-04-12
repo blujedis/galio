@@ -160,7 +160,7 @@ function Button(props: PropsWithChildren<ButtonProps>) {
     color === 'transparent' && !shadowless && { borderWidth: 1, borderColor: theme.COLORS.WHITE },
     size === 'large'
       ? { width: width * 0.9 }
-      : (size === "small" ? { width: width * 0.3 }: { width: width * 0.42 }),
+      : (size === "small" ? { width: width * 0.3 } : { width: width * 0.42 }),
     round && { borderRadius: theme.SIZES.BASE * 2 },
 
     onlyIcon && {
@@ -190,7 +190,7 @@ const styles = (theme: ThemeType) =>
       height: theme.SIZES.BUTTON_HEIGHT,
       alignItems: 'center',
       justifyContent: 'center',
-      margin: 8
+      margin: 8,
     },
     shadow: {
       shadowColor: theme.COLORS.BLOCK,

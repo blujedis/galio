@@ -82,5 +82,5 @@ declare const styles: (theme: ThemeType) => {
         elevation: number;
     };
 };
-declare const _default: React.ForwardRefExoticComponent<Pick<React.PropsWithChildren<ButtonProps>, keyof ButtonProps> & React.RefAttributes<typeof React.Component | React.FC<React.PropsWithChildren<ButtonProps>> | React.ForwardRefExoticComponent<React.PropsWithChildren<ButtonProps>>>>;
+declare const _default: React.FC<React.PropsWithChildren<ButtonProps>>;
 export default _default;

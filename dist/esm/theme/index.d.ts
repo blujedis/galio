@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, ForwardRefExoticComponent, FC, Component as ReactComponent } from 'react';
+import React, { PropsWithChildren, FC } from 'react';
 import { ThemeType } from '../types';
 export declare type StylesFn = <T extends ThemeType>(theme: T) => Record<string, unknown>;
 declare const GalioTheme: {
@@ -118,7 +118,7 @@ declare const GalioTheme: {
  * Galio custom hook which returns the theme object
  */
 export declare function useGalioTheme(): ThemeType;
-export declare const withGalio: <P extends Record<string, any>, S extends StylesFn = StylesFn>(Component: typeof React.Component | React.FC<P> | React.ForwardRefExoticComponent<P>, styles?: S) => React.ForwardRefExoticComponent<React.PropsWithoutRef<P> & React.RefAttributes<typeof React.Component | React.FC<P> | React.ForwardRefExoticComponent<P>>>;
+export declare const withGalio: <P extends Record<string, any>, S extends StylesFn = StylesFn>(Component: React.FC<P>, styles?: S) => React.FC<P>;
 export declare function GalioProvider<T extends ThemeType & {
     customTheme?: Record<string, any>;
 }>({ theme, children, }: PropsWithChildren<{

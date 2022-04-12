@@ -47,5 +47,5 @@ declare const styles: (theme: ThemeType) => {
         opacity: number;
     };
 };
-declare const _default: React.ForwardRefExoticComponent<Pick<RadioProps, keyof RadioProps> & React.RefAttributes<typeof React.Component | React.FC<RadioProps> | React.ForwardRefExoticComponent<RadioProps>>>;
+declare const _default: React.FC<RadioProps>;
 export default _default;

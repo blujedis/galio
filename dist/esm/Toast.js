@@ -128,7 +128,9 @@ const styles = (theme) => StyleSheet.create({
         backgroundColor: theme.COLORS.SUCCESS,
     },
 });
-export default withGalio(Toast, styles);
+export default withGalio((props) => {
+    return <Toast {...props}/>;
+}, styles);
 // static propTypes = {
 //   children: PropTypes.node.isRequired,
 //   isShow: PropTypes.bool.isRequired,

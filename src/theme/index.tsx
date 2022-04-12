@@ -3,7 +3,7 @@ import React, {
   createContext,
   useContext,
   PropsWithChildren,
-  ForwardRefExoticComponent,
+
   FC,
   Component as ReactComponent,
 } from 'react';
@@ -37,17 +37,17 @@ export function useGalioTheme() {
 }
 
 /*
+ *   TODO: need to rework these types, have to do for moment.
+ *
  *   withGalio
  *   args: Component - React Component, styles to be added to Component
  *   theme: if no styles or theme add default theme={ SIZES, COLORS }
  */
 export const withGalio = <P extends Record<string, any>, S extends StylesFn = StylesFn>(
-  Component: FC<P> | typeof ReactComponent | ForwardRefExoticComponent<P>,
+  Component: FC<P>,
   styles?: S
 ) => {
-  type Ref = typeof Component extends FC ? ReturnType<typeof Component> : typeof Component;
-
-  const EnhancedComponent = forwardRef<Ref, P>((props, forwardedRef) => {
+  const EnhancedComponent = forwardRef<typeof Component, P>((props, forwardedRef) => {
     return (
       <GalioContext.Consumer>
         {(theme) => (
@@ -62,7 +62,7 @@ export const withGalio = <P extends Record<string, any>, S extends StylesFn = St
     );
   });
   EnhancedComponent.displayName = Component.name;
-  return EnhancedComponent;
+  return EnhancedComponent as FC<P>;
 };
 
 export function GalioProvider<T extends ThemeType & { customTheme?: Record<string, any> }>({

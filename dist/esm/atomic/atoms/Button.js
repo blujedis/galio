@@ -100,7 +100,7 @@ const styles = (theme) => StyleSheet.create({
         height: theme.SIZES.BUTTON_HEIGHT,
         alignItems: 'center',
         justifyContent: 'center',
-        margin: 8
+        margin: 8,
     },
     shadow: {
         shadowColor: theme.COLORS.BLOCK,

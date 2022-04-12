@@ -7,5 +7,5 @@ export interface IconProps extends BaseProps {
     size?: number;
     color?: string;
 }
-declare const _default: React.ForwardRefExoticComponent<Pick<any, string | number | symbol> & React.RefAttributes<React.ForwardRefExoticComponent<any> | typeof React.Component | React.FC<any>>>;
+declare const _default: React.FC<any>;
 export default _default;

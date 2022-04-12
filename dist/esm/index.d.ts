@@ -15,4 +15,5 @@ import Icon from './atomic/ions/Icon';
 import Text from './atomic/ions/Text';
 import { GalioFont, galioConfig } from './init';
 import theme, { withGalio, GalioProvider, useGalioTheme } from './theme';
+export * from './types';
 export { Accordion, Block, Button, Card, Checkbox, DeckSwiper, Icon, Input, NavBar, Radio, Slider, Text, Link, Toast, Switch, theme, withGalio, GalioProvider, useGalioTheme, galioConfig, GalioFont, };

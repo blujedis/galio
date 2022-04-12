@@ -13,5 +13,5 @@ export interface TextProps extends BaseProps {
     bold?: boolean;
     italic?: boolean;
 }
-declare const _default: React.ForwardRefExoticComponent<Pick<React.PropsWithChildren<TextProps>, keyof TextProps> & React.RefAttributes<typeof React.Component | React.FC<React.PropsWithChildren<TextProps>> | React.ForwardRefExoticComponent<React.PropsWithChildren<TextProps>>>>;
+declare const _default: React.FC<React.PropsWithChildren<TextProps>>;
 export default _default;

@@ -20,6 +20,8 @@ export function useGalioTheme() {
     return theme;
 }
 /*
+ *   TODO: need to rework these types, have to do for moment.
+ *
  *   withGalio
  *   args: Component - React Component, styles to be added to Component
  *   theme: if no styles or theme add default theme={ SIZES, COLORS }

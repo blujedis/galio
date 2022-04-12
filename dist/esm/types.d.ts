@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren } from 'react';
 export declare type BaseProps = Record<string, any>;
 export declare type BaseColorType = string;
 export declare type ButtonColorType = string;
@@ -56,6 +56,7 @@ export interface ThemeType {
         [key: string]: number;
     };
     COLORS?: {
+        BODY?: string;
         FACEBOOK?: string;
         TWITTER?: string;
         DRIBBBLE?: string;

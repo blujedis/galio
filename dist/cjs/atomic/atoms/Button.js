@@ -102,7 +102,7 @@ const styles = (theme) => react_native_1.StyleSheet.create({
         height: theme.SIZES.BUTTON_HEIGHT,
         alignItems: 'center',
         justifyContent: 'center',
-        margin: 8
+        margin: 8,
     },
     shadow: {
         shadowColor: theme.COLORS.BLOCK,

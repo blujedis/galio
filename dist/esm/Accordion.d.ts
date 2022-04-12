@@ -65,5 +65,5 @@ declare const styles: (theme: ThemeType) => {
         padding: number;
     };
 };
-declare const _default: React.ForwardRefExoticComponent<Pick<AccordianProps, keyof AccordianProps> & React.RefAttributes<typeof React.Component | React.FC<AccordianProps> | React.ForwardRefExoticComponent<AccordianProps>>>;
+declare const _default: React.FC<AccordianProps>;
 export default _default;

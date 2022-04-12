@@ -25,5 +25,5 @@ declare const styles: (theme: ThemeType) => {
         backgroundColor: string;
     };
 };
-declare const _default: React.ForwardRefExoticComponent<Pick<React.PropsWithChildren<AvatarProps>, keyof AvatarProps> & React.RefAttributes<typeof React.Component | React.FC<React.PropsWithChildren<AvatarProps>> | React.ForwardRefExoticComponent<React.PropsWithChildren<AvatarProps>>>>;
+declare const _default: React.FC<React.PropsWithChildren<AvatarProps>>;
 export default _default;
